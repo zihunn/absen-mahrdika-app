@@ -150,8 +150,120 @@ class RegisterView extends GetView<RegisterController> {
                 ),
               ),
               const SizedBox(
+                height: 25.0,
+              ),
+              FadeAnimation(
+                1.6,
+                SizedBox(
+                  height: 50.0,
+                  child: Obx(
+                    () => Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            controller.selectedRole.value = 0;
+                            controller.role.value = 'Dosen';
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.all(8),
+                            clipBehavior: Clip.antiAlias,
+                            width: Get.width / 4,
+                            decoration: BoxDecoration(
+                              color: controller.selectedRole.value == 0
+                                  ? AppColor.bluePrimary.withOpacity(0.5)
+                                  : AppColor.bluePrimary.withOpacity(0.1),
+                              borderRadius: const BorderRadius.all(
+                                Radius.circular(12.0),
+                              ),
+                              border: Border.all(color: AppColor.bluePrimary),
+                            ),
+                            child: SizedBox(
+                              height: 100.0,
+                              child: Row(
+                                children: [
+                                  SizedBox(
+                                    width: Get.width / 10,
+                                    child:
+                                        Image.asset("assets/icons/dosen.png"),
+                                  ),
+                                  Expanded(
+                                    child: Container(
+                                      child: Text(
+                                        "Dosen",
+                                        style: TextStyle(
+                                          fontSize: 14.0,
+                                          fontFamily: 'SignikaBold',
+                                          color:
+                                              controller.selectedRole.value == 0
+                                                  ? Colors.white
+                                                  : Colors.grey
+                                                      .withOpacity(0.5),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            controller.selectedRole.value = 1;
+                            controller.role.value = 'Mhsw';
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.all(8),
+                            clipBehavior: Clip.antiAlias,
+                            width: Get.width / 3,
+                            decoration: BoxDecoration(
+                              color: controller.selectedRole.value == 1
+                                  ? AppColor.bluePrimary.withOpacity(0.5)
+                                  : AppColor.bluePrimary.withOpacity(0.1),
+                              borderRadius: const BorderRadius.all(
+                                Radius.circular(12.0),
+                              ),
+                              border: Border.all(color: AppColor.bluePrimary),
+                            ),
+                            child: SizedBox(
+                              height: 100.0,
+                              child: Row(
+                                children: [
+                                  SizedBox(
+                                    width: Get.width / 10,
+                                    child: Image.asset("assets/icons/mhsw.png"),
+                                  ),
+                                  Expanded(
+                                    child: Container(
+                                      child: Text(
+                                        "Mahasiswa",
+                                        style: TextStyle(
+                                          fontSize: 14.0,
+                                          fontFamily: 'SignikaBold',
+                                          color:
+                                              controller.selectedRole.value == 1
+                                                  ? Colors.white
+                                                  : Colors.grey
+                                                      .withOpacity(0.5),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(
                 height: 35.0,
               ),
+             
               FadeAnimation(
                 1.8,
                 SizedBox(
@@ -167,13 +279,16 @@ class RegisterView extends GetView<RegisterController> {
                     onPressed: () {
                       if (controller.npmCtrl.text.isNotEmpty &&
                           controller.emailCtrl.text.isNotEmpty &&
-                          controller.passwordCtrl.text.isNotEmpty) {
+                          controller.passwordCtrl.text.isNotEmpty &&
+                          controller.role.value.isNotEmpty) {
                         Map<String, dynamic> requestBody = {
-                          'email': 'test@gmail.com',
-                          'npm': '322E0008',
-                          'password': 'test12',
+                          'email': controller.emailCtrl.text,
+                          'npm': controller.npmCtrl.text,
+                          'password': controller.passwordCtrl.text,
                           'device_id':
-                              '322E0008TQ1A.230205.0021676739431Pocophone F1'
+                              controller.npmCtrl.text + loginCtrl.deviceId,
+                          'role': controller.role.value,
+
                           // 'email': controller.emailCtrl.text,
                           // 'npm': controller.npmCtrl.text,
                           // 'password': controller.passwordCtrl.text,

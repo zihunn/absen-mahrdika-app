@@ -1,5 +1,6 @@
 import 'package:absensi_mahardika/app/controllers/auth_controller.dart';
 import 'package:absensi_mahardika/app/modules/register/views/register_view.dart';
+import 'package:absensi_mahardika/app/utils/bottomsheet.dart';
 import 'package:absensi_mahardika/app/widgets/animation/animation.dart';
 import 'package:absensi_mahardika/app/widgets/textfield/custom_textfield.dart';
 import 'package:absensi_mahardika/models/device_info_model.dart';
@@ -128,15 +129,11 @@ class LoginView extends GetView<LoginController> {
                 ),
                 FadeAnimation(
                   2,
-                  FutureBuilder<AndroidDeviceInfo>(
-                    future: controller.getInfo(),
+                  FutureBuilder(
+                    future: controller.getDeviceId(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.done) {
-                        DeviceInfoModel data = DeviceInfoModel(
-                            id: snapshot.data!.id,
-                            model: snapshot.data!.model,
-                            version: snapshot.data!.version.incremental);
-                        print(data);
+                        print(snapshot.data);
                         return SizedBox(
                           height: 50,
                           width: Get.width,
@@ -153,17 +150,10 @@ class LoginView extends GetView<LoginController> {
                                   'npm': controller.npmCtrl.text,
                                   'password': controller.passwordCtrl.text,
                                   'device_id': controller.npmCtrl.text +
-                                      data.id! +
-                                      data.version! +
-                                      data.model!
+                                      controller.deviceId
                                 };
-                                Map<String, dynamic> jadwal = {
-                                  'npm': controller.npmCtrl.text,
-                                };
-
                                 print(requestBody);
                                 authCtrl.Login(requestBody);
-                                authCtrl.getJadwal(jadwal);
                               }
                             },
                             child: const Text("Login"),

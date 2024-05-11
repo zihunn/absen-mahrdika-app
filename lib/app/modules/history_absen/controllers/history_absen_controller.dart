@@ -51,7 +51,7 @@ class HistoryAbsenController extends GetxController {
       await Future.delayed(const Duration(seconds: 1));
       http.Response response = await http.get(url, headers: {
         'Accept': 'application/json',
-        'Authorization': 'Bearer $token',
+        'Authorization': 'Bearer $token', 
       });
 
       if (response.statusCode == 200) {

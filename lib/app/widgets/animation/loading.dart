@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../../utils/color.dart';
+
 class JadwalShimmer extends StatelessWidget {
   const JadwalShimmer({super.key});
 
@@ -145,6 +147,70 @@ class HistoryShimmer extends StatelessWidget {
             ),
             const Expanded(child: Skeleton())
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class CardMhswShimmer extends StatelessWidget {
+  const CardMhswShimmer({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey,
+      highlightColor: Colors.white,
+      child: Container(
+        padding: const EdgeInsets.all(10),
+        margin: const EdgeInsets.only(bottom: 10),
+        height: Get.height / 10,
+        width: Get.width,
+        decoration: BoxDecoration(
+          color: AppColor.bluePrimary.withOpacity(0.04),
+          borderRadius: const BorderRadius.all(
+            Radius.circular(12.0),
+          ),
+        ),
+        child: SizedBox(
+          height: 100.0,
+          child: Row(
+            children: [
+              Skeleton(
+                height: Get.height,
+                width: Get.width / 7,
+              ),
+              const SizedBox(
+                width: 15.0,
+              ),
+              Expanded(
+                child: SizedBox(
+                  width: 80.0,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Skeleton(
+                        height: Get.height / 45,
+                        width: Get.width / 3,
+                      ),
+                      const SizedBox(
+                        height: 5.0,
+                      ),
+                      Skeleton(
+                        height: Get.height / 45,
+                        width: Get.width / 3,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Skeleton(
+                height: Get.height / 35,
+                width: Get.width / 7,
+              ),
+            ],
+          ),
         ),
       ),
     );

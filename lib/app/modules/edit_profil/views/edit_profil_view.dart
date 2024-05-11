@@ -41,22 +41,22 @@ class EditProfilView extends GetView<EditProfilController> {
         child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
           padding: const EdgeInsets.only(top: 20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              GestureDetector(
-                onTap: () => controller.getImage(),
-                child: Container(
-                  height: 90,
-                  width: 90,
-                  decoration: const BoxDecoration(
-                    color: Colors.transparent,
-                    shape: BoxShape.circle,
-                  ),
-                  child: Stack(
-                    children: [
-                      Obx(() {
-                        return Container(
+          child: Obx(() {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                GestureDetector(
+                  onTap: () => controller.getImage(),
+                  child: Container(
+                    height: 90,
+                    width: 90,
+                    decoration: const BoxDecoration(
+                      color: Colors.transparent,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Stack(
+                      children: [
+                        Container(
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             image: controller.image.value == ''
@@ -75,128 +75,142 @@ class EditProfilView extends GetView<EditProfilController> {
                                     ),
                                   ),
                           ),
-                        );
-                      }),
-                    ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(
-                height: 20.0,
-              ),
-              Text(
-                "Muhammad Rizki",
-                style: Style.Header1.copyWith(
-                  fontFamily: 'SignikaSemi',
-                  color: AppColor.blackSoftColor,
-                  fontSize: 20.0,
+                const SizedBox(
+                  height: 20.0,
                 ),
-              ),
-              Text(
-                "Teknik Informatika",
-                style: Style.Header1.copyWith(
-                  fontFamily: 'SignikaRegular',
-                  color: AppColor.greyColor,
-                  fontSize: 16.0,
+                Text(
+                  dataUser.value.account?.nama ?? '-',
+                  style: Style.Header1.copyWith(
+                    fontFamily: 'SignikaSemi',
+                    color: AppColor.blackSoftColor,
+                    fontSize: 20.0,
+                  ),
                 ),
-              ),
-              const SizedBox(
-                height: 30.0,
-              ),
-              Divider(
-                thickness: 1,
-                color: AppColor.greyColor.withOpacity(0.4),
-              ),
-              const SizedBox(
-                height: 20.0,
-              ),
-              TextFieldEditProfil(
-                readOnly: true,
-                label: 'Full Name',
-                isTextField: true,
-                controller: controller.nameCtrl,
-              ),
-              const SizedBox(
-                height: 20.0,
-              ),
-              Obx(() {
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    GestureDetector(
-                      onTap: () => GenderBottomsheet(),
-                      child: SizedBox(
-                        width: 175,
-                        child: TextFieldEditProfil(
-                          readOnly: true,
-                          label: 'Gender',
-                          isTextField: false,
-                          text: controller.gender.value,
+                Text(
+                  dataUser.value.account?.prodiId ?? '-',
+                  style: Style.Header1.copyWith(
+                    fontFamily: 'SignikaRegular',
+                    color: AppColor.greyColor,
+                    fontSize: 16.0,
+                  ),
+                ),
+                const SizedBox(
+                  height: 30.0,
+                ),
+                Divider(
+                  thickness: 1,
+                  color: AppColor.greyColor.withOpacity(0.4),
+                ),
+                const SizedBox(
+                  height: 20.0,
+                ),
+                TextFieldEditProfil(
+                  readOnly: true,
+                  label: 'Full Name',
+                  isTextField: true,
+                  controller: controller.nameCtrl,
+                ),
+                const SizedBox(
+                  height: 20.0,
+                ),
+                Obx(() {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      GestureDetector(
+                        onTap: () => GenderBottomsheet(),
+                        child: SizedBox(
+                          width: 175,
+                          child: TextFieldEditProfil(
+                            readOnly: true,
+                            label: 'Gender',
+                            isTextField: false,
+                            text: controller.gender.value,
+                          ),
                         ),
                       ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        controller.datePicker();
-                        print(controller.selectedDate.value);
-                      },
-                      child: SizedBox(
-                        width: 175,
-                        child: TextFieldEditProfil(
-                          readOnly: true,
-                          label: 'Birthday',
-                          isTextField: false,
-                          text: controller.selectedDate.value,
+                      GestureDetector(
+                        onTap: () {
+                          controller.datePicker();
+                          print(controller.selectedDate.value);
+                        },
+                        child: SizedBox(
+                          width: 175,
+                          child: TextFieldEditProfil(
+                            readOnly: true,
+                            label: 'Birthday',
+                            isTextField: false,
+                            text: controller.selectedDate.value,
+                          ),
                         ),
                       ),
+                    ],
+                  );
+                }),
+                const SizedBox(
+                  height: 20.0,
+                ),
+                TextFieldEditProfil(
+                  type: TextInputType.number,
+                  readOnly: false,
+                  label: 'Phone number',
+                  isTextField: true,
+                  controller: controller.noCtrl,
+                ),
+                const SizedBox(
+                  height: 20.0,
+                ),
+                TextFieldEditProfil(
+                  readOnly: false,
+                  label: 'Email',
+                  isTextField: true,
+                  type: TextInputType.emailAddress,
+                  controller: controller.emailCtrl,
+                ),
+                const SizedBox(
+                  height: 30.0,
+                ),
+                ButtonConfirm(
+                  radius: 10,
+                  widget: const Text(
+                    "Simpan",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontFamily: 'SignikaSemi',
                     ),
-                  ],
-                );
-              }),
-              const SizedBox(
-                height: 20.0,
-              ),
-              TextFieldEditProfil(
-                type: TextInputType.number,
-                readOnly: false,
-                label: 'Phone number',
-                isTextField: true,
-                controller: controller.noCtrl,
-              ),
-              const SizedBox(
-                height: 20.0,
-              ),
-              TextFieldEditProfil(
-                readOnly: false,
-                label: 'Email',
-                isTextField: true,
-                type: TextInputType.emailAddress,
-                controller: controller.emailCtrl,
-              ),
-              const SizedBox(
-                height: 30.0,
-              ),
-              ButtonConfirm(
-                onTap: () async {
-                  Map<String, dynamic> requestBody = {
-                    'jenis_kelamin': controller.gender.value,
-                    'tanggal_lahir': controller.selectedDate.value,
-                    'no_hp': controller.noCtrl.value.text,
-                    'email': controller.emailCtrl.value.text,
-                    'image': controller.image.value == ''
-                        ? null
-                        : dio.MultipartFile.fromFileSync(
-                            controller.image.value),
-                    '_method': 'put'
-                  };
-                  print(requestBody);
-                  controller.editProfil(requestBody, dataUser.value.account!.npm!);
-                },
-                height: 50,
-                width: Get.width,
-              ),
-            ],
-          ),
+                  ),
+                  color: AppColor.bluePrimary,
+                  colorOutline: AppColor.blueColor2,
+                  isOutline: false,
+                  widthOutline: 0,
+                  onTap: () async {
+                    Map<String, dynamic> requestBody = {
+                      'jenis_kelamin': controller.gender.value,
+                      'tanggal_lahir': controller.selectedDate.value,
+                      'no_hp': controller.noCtrl.value.text,
+                      'email': controller.emailCtrl.value.text,
+                      'image': controller.image.value == ''
+                          ? null
+                          : dio.MultipartFile.fromFileSync(
+                              controller.image.value),
+                      '_method': 'put'
+                    };
+
+                    print(requestBody);
+                    controller.editProfil(
+                        requestBody, dataUser.value.account!.npm!);
+                  },
+                  height: 50,
+                  width: Get.width,
+                ),
+              ],
+            );
+          }),
         ),
       ),
     );

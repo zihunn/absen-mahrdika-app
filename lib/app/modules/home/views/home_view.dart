@@ -104,7 +104,7 @@ class HomeView extends GetView<HomeController> {
                                     ),
                                   ),
                                   Text(
-                                    dataUser.value.account?.nama ?? 'null',
+                                    dataUser.value.account?.npm ?? 'null',
                                     style: Style.Subtitle1.copyWith(
                                       color: Colors.white,
                                       fontSize: 12,

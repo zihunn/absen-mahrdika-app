@@ -44,7 +44,8 @@ class _CardTabbarState extends State<CardTabbar> {
       width: Get.width / 1.12,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: context.theme.primaryColor,
+        // color: context.theme.primaryColor,
+        color: Colors.white,
         boxShadow: [
           BoxShadow(
             color: context.theme.shadowColor,
@@ -168,6 +169,8 @@ class _CardTabbarState extends State<CardTabbar> {
                   child: GestureDetector(
                     onTap: () => widget.onTap1!(),
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
                           widget.name1,

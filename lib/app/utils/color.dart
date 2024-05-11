@@ -11,12 +11,13 @@ class AppColor {
   static const greenColor = Color(0xff82CD47);
   static final blueColor = Colors.blue.withOpacity(0.8);
   static const blueColor2 = Color(0xff91c8e4);
+  static const bgColor =  Color(0xffF6F7FA);
 }
 
 class Themes {
   static ThemeData light = ThemeData(
     brightness: Brightness.light,
-    primaryColor: Colors.grey[100],
+    primaryColor: AppColor.bgColor,
     cardColor: Colors.white,
     shadowColor: const Color(0x19000000),
     textTheme: const TextTheme(

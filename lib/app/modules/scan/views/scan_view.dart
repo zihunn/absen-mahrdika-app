@@ -131,6 +131,7 @@ class ScanView extends GetView<ScanController> {
                         child: QRView(
                           key: controller.qrKey,
                           onQRViewCreated: controller.onQRViewCreated,
+                          
                         ),
                       ),
                     ),

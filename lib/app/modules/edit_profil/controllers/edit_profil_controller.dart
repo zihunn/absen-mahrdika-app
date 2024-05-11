@@ -21,15 +21,19 @@ class EditProfilController extends GetxController {
   var dataUserModel = userModel().obs;
   File? img;
   late var nameCtrl = TextEditingController(
-    text: dataUser.value.account?.nama == '' ? '-' : dataUser.value.account!.nama,
+    text:
+        dataUser.value.account?.nama == '' ? '-' : dataUser.value.account!.nama,
   );
 
   late var noCtrl = TextEditingController(
-    text: dataUser.value.account?.noHp == '' ? '-' : dataUser.value.account!.noHp,
+    text:
+        dataUser.value.account?.noHp == '' ? '-' : dataUser.value.account!.noHp,
   );
 
   late var emailCtrl = TextEditingController(
-    text: dataUser.value.account?.email == '' ? '-' : dataUser.value.account!.email,
+    text: dataUser.value.account?.email == ''
+        ? '-'
+        : dataUser.value.account!.email,
   );
 
 //Crop Image
@@ -105,19 +109,26 @@ class EditProfilController extends GetxController {
 
       print(editProfilUrl + npm);
       if (response.statusCode == 200) {
-        dataUser.value =userModel.fromJson(response.data) ;
-        print(dataUser.value.account!.image);
+        // print(dataUser.value.account!.image);
+        print(response.data);
+        dataUser.value = userModel.fromJson(response.data);
+        bottomsheet(
+          title: 'Yay Berhasil!',
+          subtitle: 'Data kamu berhasil diubah',
+          image: 'assets/images/happy-illustration.png',
+          onTap: () {
+            Get.back();
+          },
+        );
         return dataUser;
       }
-      
-
-      
     } catch (e) {
       print(e);
       bottomsheet(
-        'Yah! Gagal Login',
-        'Kesalahan Tidak Diketahui',
-        () {
+        title: 'Yah Gagal!',
+        subtitle: 'Kesalahan tidak diketahui',
+        image: 'assets/images/sad-illustration.png',
+        onTap: () {
           Get.back();
         },
       );

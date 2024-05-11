@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:absensi_mahardika/models/device_info_model.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
@@ -16,23 +18,38 @@ class LoginController extends GetxController with GetTickerProviderStateMixin {
   String? id = '';
   String? version = '';
   String? model = '';
+    late String deviceId;
 
-  Future<AndroidDeviceInfo> getInfo() async {
-    deviceInfo.androidInfo.asStream().forEach((element) {
-      id = element.id;
-      version = element.version.incremental;
-      model = element.model;
-    });
+  Future<String> getDeviceId() async {
+    var deviceInfo = DeviceInfoPlugin();
 
-    DeviceInfoModel(id: id, model: model, version: version);
-
-    return await deviceInfo.androidInfo;
+    if (Platform.isIOS) {
+      var iosDeviceInfo = await deviceInfo.iosInfo;
+      deviceId = iosDeviceInfo.identifierForVendor!;
+    } else if (Platform.isAndroid) {
+      var androidDeviceInfo = await deviceInfo.androidInfo;
+      deviceId = androidDeviceInfo.id!;
+    } else {
+      deviceId = 'null';
+    }
+    return deviceId;
   }
-  
+
+  // Future getInfo() async {
+  //   deviceInfo.androidInfo.asStream().forEach((element) {
+  //     id = element.id;
+  //     version = element.version.incremental;
+  //     model = element.model;
+  //   });
+
+  //   DeviceInfoModel(id: id, model: model, version: version);
+
+  //   return await deviceInfo.androidInfo;
+  // }
 
   @override
   void onInit() {
-    getInfo();
+    getDeviceId();
     _controller = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 300));
     _animation = Tween(begin: 300.0, end: 50.0).animate(_controller)

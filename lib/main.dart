@@ -24,6 +24,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final profCtrl = Get.put(ProfileController());
     final authC = Get.put(AuthController(), permanent: true);
+    // return GetMaterialApp(
+    //   debugShowCheckedModeBanner: false,
+    //   initialRoute: Routes.CALENDAR,
+    //   getPages: AppPages.routes,
+    // );
     return profCtrl.isChange.value
         ? Obx(
             () {
@@ -38,7 +43,9 @@ class MyApp extends StatelessWidget {
                     : Themes.light,
                 initialRoute: authC.isSkipIntro.isTrue
                     ? authC.isAuth.isTrue
-                        ? Routes.NAVIGATION_BAR
+                        ? authC.dataUser.value.account!.role == 'Dosen'
+                            ? Routes.NAVIGATIONS_DOSEN
+                            : Routes.NAVIGATION_BAR
                         : Routes.LOGIN
                     : Routes.INTRODUCTION,
                 getPages: AppPages.routes,
@@ -46,9 +53,10 @@ class MyApp extends StatelessWidget {
             },
           )
         : FutureBuilder(
-            future: Future.delayed(const Duration(milliseconds: 3000)),
+            future: Future.delayed(const Duration(seconds: 5)),
             builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
+              if (snapshot.connectionState != ConnectionState.waiting) {
+                print(authC.dataUser.value.account?.role);
                 return Obx(
                   () {
                     return GetMaterialApp(
@@ -62,7 +70,9 @@ class MyApp extends StatelessWidget {
                           : Themes.light,
                       initialRoute: authC.isSkipIntro.isTrue
                           ? authC.isAuth.isTrue
-                              ? Routes.NAVIGATION_BAR
+                              ? authC.dataUser.value.account?.role == 'Dosen'
+                                  ? Routes.NAVIGATIONS_DOSEN
+                                  : Routes.NAVIGATION_BAR
                               : Routes.LOGIN
                           : Routes.INTRODUCTION,
                       getPages: AppPages.routes,

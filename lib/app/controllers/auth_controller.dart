@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 import 'package:absensi_mahardika/app/data/user_model.dart';
 import 'package:absensi_mahardika/app/routes/app_pages.dart';
 import 'package:absensi_mahardika/app/utils/bottomsheet.dart';
@@ -21,28 +23,41 @@ class AuthController extends GetxController {
   var isSkipIntro = false.obs;
   var isAuth = false.obs;
 
-  Future<AndroidDeviceInfo> getInfo() async {
-    return await deviceInfo.androidInfo;
+  Future<String> getDeviceId() async {
+    var deviceInfo = DeviceInfoPlugin();
+    late String deviceId;
+
+    if (Platform.isIOS) {
+      var iosDeviceInfo = await deviceInfo.iosInfo;
+      deviceId = iosDeviceInfo.identifierForVendor!;
+    } else if (Platform.isAndroid) {
+      var androidDeviceInfo = await deviceInfo.androidInfo;
+    } else {
+      deviceId = 'null';
+    }
+    return deviceId;
+  }
+
+  Future getInfo() async {
+    if (Platform.isAndroid) {
+      return await deviceInfo.androidInfo;
+    } else if (Platform.isIOS) {
+      return await deviceInfo.iosInfo;
+    }
   }
 
   Future register(requestBody) async {
     try {
       print('1');
-      var res = await dio.post(
-        'http://192.168.1.16:8000/api/register',
-        data: {
-          'email': 'test@gmail.com',
-          'npm': '322E0008',
-          'password': 'test12',
-          'device_id': '322E0008TQ1A.230205.0021676739431Pocophone F1'
-        },
-      );
+      var res = await dio.post(registerUrl, data: jsonEncode(requestBody));
       print('ini print regis ' '$res');
+      print(registerUrl);
       if (res.statusCode == 200) {
         bottomsheet(
-          'Yay! Berhasil',
-          'Anda Berhasil Membuat Akun, Silahkan Login',
-          () {
+          title: 'Yay Berhasil!',
+          subtitle: 'Anda berhasil membuat akun. Silahkan login',
+          image: 'assets/images/happy-illustration.png',
+          onTap: () {
             Get.back();
             Get.back();
           },
@@ -51,70 +66,38 @@ class AuthController extends GetxController {
 
         return res.data;
       }
-       if (res.statusCode == 401) {
-        bottomsheet('Yah! Gagal', 'Npm Yang Ada Masukan Tidak Terdaftar', () {
-          Get.back();
-        });
+      if (res.statusCode == 401) {
+        bottomsheet(
+          title: 'Yah Gagal!',
+          subtitle: 'Npm yang anda masukan tidak terdaftar',
+          image: 'assets/images/sad-illustration.png',
+          onTap: () {
+            Get.back();
+          },
+        );
       }
       if (res.statusCode == 402) {
-        bottomsheet('Yah! Gagal', 'Npm Yang Anda Masukan Sudah Terdaftar', () {
-          Get.back();
-        });
-      }
-    } catch (e) {
-        print(e);
-        bottomsheet('Yah! Gagal', 'Kesalahan Tidak Diketahui', () {
-          Get.back();
-        });
-    }
-  }
-
-  Future getJadwal(requestBody) async {
-    try {
-      var res = await dio.post(
-        jadwalUrl,
-        data: dioPackage.FormData.fromMap(requestBody),
-      );
-      print(res);
-      log(res.realUri.toString());
-      if (res.statusCode == 200) {
-        return res.data;
+        bottomsheet(
+          title: 'Yah Gagal!',
+          subtitle: 'Npm yang anda masukan sudah terdaftar',
+          image: 'assets/images/sad-illustration.png',
+          onTap: () {
+            Get.back();
+          },
+        );
       }
     } catch (e) {
       print(e);
-      return null;
+      bottomsheet(
+        title: 'Yah Gagal!',
+        subtitle: 'Kesalahan tidak diketahui',
+        image: 'assets/images/sad-illustration.png',
+        onTap: () {
+          Get.back();
+        },
+      );
     }
   }
-
-  // Future register( Map<String, dynamic>  requestBody) async {
-  //   try {
-  //     print('1');
-  //     http.Response response = await http.post(
-  //       Uri.tryParse(registerUrl)!,
-  //       // headers: {'Content-Type': 'application/json'},
-  //       body: {
-  //         'email': 'test@gmail.com',
-  //         'npm': '322E0008',
-  //         'password': 'test12',
-  //         'device_id': '322E0008TQ1A.230205.0021676739431Pocophone F1'
-  //       },
-  //     );
-  //     print('2');
-  //     if (response.statusCode == 200) {
-  //       bottomsheet(
-  //         'Yay! Berhasil',
-  //         'Anda Berhasil Membuat Akun, Silahkan Login',
-  //         () {
-  //           Get.back();
-  //           Get.back();
-  //         },
-  //       );
-  //       print(response.statusCode);
-
-  //       return response.body;
-  //     }
-  //   } catch (e) {}
-  // }
 
   Future Login(requestBody) async {
     try {
@@ -131,6 +114,11 @@ class AuthController extends GetxController {
         var result = jsonDecode(response.body);
         print('3.p');
 
+        if (box.read('dataUser') != null) {
+          box.remove('dataUser');
+        }
+        box.write('dataUser', dataUser.value);
+
         dataUser.value = userModel.fromJson(result);
         print('4');
 
@@ -139,19 +127,25 @@ class AuthController extends GetxController {
         }
         box.write('skipIntro', true);
         print('5');
-
+        if (box.read('token') != null) {
+          box.remove('token');
+        }
+        isAuth.value = true;
         var data = box.write('token', dataUser.value.account!.rememberToken!);
         print(data);
 
-        Get.offAllNamed(Routes.NAVIGATION_BAR);
+        Get.offAllNamed(dataUser.value.account!.role == 'Dosen'
+            ? Routes.NAVIGATIONS_DOSEN
+            : Routes.NAVIGATION_BAR);
 
         return dataUser;
       }
       if (response.statusCode == 400) {
         bottomsheet(
-          'Yah! Gagal Login',
-          'Npm atau password yang anda masukan salah',
-          () {
+          title: 'Yah Gagal Login!',
+          subtitle: 'Npm atau password yang anda masukan salah',
+          image: 'assets/images/sad-illustration.png',
+          onTap: () {
             Get.back();
           },
         );
@@ -159,9 +153,10 @@ class AuthController extends GetxController {
 
       if (response.statusCode == 401) {
         bottomsheet(
-          'Yah! Gagal Login',
-          'Silahkan login menggunakan device saat mendaftar',
-          () {
+          title: 'Yah Gagal Login!',
+          subtitle: 'Silahkan login menggunakan device saat mendaftar',
+          image: 'assets/images/sad-illustration.png',
+          onTap: () {
             Get.back();
           },
         );
@@ -169,9 +164,10 @@ class AuthController extends GetxController {
     } catch (e) {
       print(e);
       bottomsheet(
-        'Yah! Gagal Login',
-        'Kesalahan Tidak Diketahui',
-        () {
+        title: 'Yah Gagal Login!',
+        subtitle: 'Kesalahan tidak diketahui',
+        image: 'assets/images/sad-illustration.png',
+        onTap: () {
           Get.back();
         },
       );
@@ -188,15 +184,23 @@ class AuthController extends GetxController {
         Uri.parse(dashboardUrl),
         headers: {
           'Accept': 'application/json',
+          'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',
         },
-      );
+      ).timeout(const Duration(minutes: 2));
       print('2.2');
-      // print(jsonDecode(response.body));
+      print(token);
+      print(response.body);
 
       if (response.statusCode == 200) {
         var result = jsonDecode(response.body);
         print('3.3');
+
+        if (box.read('dataUser') != null) {
+          box.remove('dataUser');
+        }
+        box.write('dataUser', dataUser.value);
+        isAuth.value = true;
 
         dataUser.value = userModel.fromJson(result);
         print('4.4');
@@ -207,17 +211,29 @@ class AuthController extends GetxController {
         box.write('skipIntro', true);
         print('5');
 
+        if (box.read('token') != null) {
+          box.remove('token');
+        }
         var data = box.write('token', dataUser.value.account!.rememberToken!);
         print(result);
 
         return dataUser;
       }
-    } catch (e) {
-      print(e);
+    } on TimeoutException catch (_) {
       bottomsheet(
-        'Yah! Gagal Login',
-        'Kesalahan Tidak Diketahui',
-        () {
+        title: 'Yah Gagal!',
+        subtitle: 'Perikas kembali koneksi anda',
+        image: 'assets/images/sad-illustration.png',
+        onTap: () {
+          Get.back();
+        },
+      );
+    } on SocketException catch (_) {
+      bottomsheet(
+        title: 'Yah Gagal!',
+        subtitle: 'Kesalahan tidak diketahui',
+        image: 'assets/images/sad-illustration.png',
+        onTap: () {
           Get.back();
         },
       );
@@ -234,25 +250,37 @@ class AuthController extends GetxController {
   }
 
   Future<bool> autoLogin() async {
+    // box.remove('token');
     if (box.read('token') == null) {
       return false;
     }
 
-    var myData = box.read('token');
+    var myData = await box.read('token');
     dashboardLogin(myData);
     return true;
   }
 
   Future<void> firstInitialized() async {
     await autoLogin().then((value) {
+      // box.remove('token');
+      print('firstInitialized');
+      print(value);
+      print(isAuth.value);
       if (value) {
         isAuth.value = true;
+        print('firstInitialized');
+        print(value);
       }
     });
 
     await skipIntro().then((value) {
+      print('skipIntro');
+      print(value);
+      print(isSkipIntro.value);
       if (value) {
         isSkipIntro.value = true;
+        print('skipIntro');
+        print(value);
       }
     });
   }

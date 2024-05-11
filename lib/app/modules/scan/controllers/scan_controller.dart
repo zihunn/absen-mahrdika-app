@@ -1,19 +1,16 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 import 'package:absensi_mahardika/app/modules/home/controllers/home_controller.dart';
 import 'package:absensi_mahardika/app/utils/bottomsheet.dart';
 import 'package:absensi_mahardika/app/utils/network.dart';
-import 'package:camera/camera.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
-import "package:http/http.dart" as http;
 import 'package:scan/scan.dart';
 import 'package:geolocator/geolocator.dart';
 import '../../../data/user_location.dart';
-import 'package:geocoding/geocoding.dart';
+import "package:dio/dio.dart" as diopack;
 
 class ScanController extends GetxController {
   File? image;
@@ -24,7 +21,6 @@ class ScanController extends GetxController {
   final picker = ImagePicker();
   late bool _isFlashOn = false;
   QRViewController? controller;
-  late CameraController cameraController;
   late Future<void> cameraInitializeFuture;
   var homeCtrl = Get.put(HomeController());
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
@@ -74,32 +70,7 @@ class ScanController extends GetxController {
     };
   }
 
-  Future<void> initializeCamera() async {
-    final cameras = await availableCameras();
-    final backCamera = cameras.firstWhere(
-      (camera) => camera.lensDirection == CameraLensDirection.front,
-      orElse: () => cameras.first,
-    );
-
-    cameraController = CameraController(
-      backCamera,
-      ResolutionPreset.veryHigh,
-    );
-
-    await cameraController.initialize();
-  }
-
-  Future<void> toggleFlashLight() async {
-    try {
-      if (_isFlashOn) {
-        await cameraController.setFlashMode(FlashMode.always);
-      } else {
-        await cameraController.setFlashMode(FlashMode.always);
-      }
-      _isFlashOn = !_isFlashOn;
-      update();
-    } catch (e) {}
-  }
+ 
 
   Future<void> getImage() async {
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
@@ -120,7 +91,10 @@ class ScanController extends GetxController {
     controller.scannedDataStream.listen((scanData) async {
       result = scanData;
       print(result);
-      String jadwalId = result!.code.toString().split(' ').first;
+      String jadwalId =
+          result!.code.toString().split(' ').first.split('.').first;
+      String presensiId =
+          result!.code.toString().split(' ').first.split('.').last;
 
       String dateQr = result!.code
           .toString()
@@ -155,21 +129,32 @@ class ScanController extends GetxController {
         result!.code.toString().split(' ').last.split('&').last.split(':').last,
       );
 
+      String hoursQr = result!.code.toString().split(' ').last.split('&').last;
+
+      TimeOfDay now = TimeOfDay.now();
+      TimeOfDay closingTime = TimeOfDay(hour: hourQr, minute: minuteQr);
+
+      DateTime dt1 = DateTime.parse("$dateQr 11:47:00");
+      DateTime dt2 = DateTime.now();
+
+      DateTime date1 = DateTime(dt1.year, dt1.month, dt1.day);
+      DateTime date2 = DateTime(dt2.year, dt2.month, dt2.day);
 
       Map<String, dynamic> requestBody = {
         'npm': dataUser.value.account!.npm,
-        'nama_mhsw': dataUser.value.account!.nama,
-        'pertemuan': pertemuan,
-        'status': 'alpa',
+        'presensi_id': presensiId,
+        'status': 'H',
+        'nilai': '1',
         'jadwal_id': jadwalId
       };
 
-      if (homeCtrl.time == dateQr &&
-          hourQr >= homeCtrl.hour &&
-          homeCtrl.minute <= minuteQr) {
-        print("success");
+      int shopCloseTimeInSeconds = closingTime.hour * 60 + closingTime.minute;
+      int timeNowInSeconds = now.hour * 60 + now.minute;
 
-        absen(requestBody); 
+      if (timeNowInSeconds <= shopCloseTimeInSeconds &&
+          date1.compareTo(date2) == 0) {
+        print("success");
+        absen(requestBody);
 
         controller.stopCamera();
       } else {
@@ -177,72 +162,95 @@ class ScanController extends GetxController {
 
         controller.stopCamera();
 
-        bottomsheet('Yah! Gagal', 'Waktu absen sudah ditutup', () {
-          Get.back();
-          controller.resumeCamera();
-        });
+        bottomsheet(
+          title: 'Yah Gagal!',
+          subtitle: 'Waktu absen sudah ditutup',
+          image: 'assets/images/sad-illustration.png',
+          onTap: () {
+            Get.back();
+            controller.resumeCamera();
+          },
+        );
       }
+
       update();
     });
   }
 
   Future absen(requestBody) async {
     try {
-      http.Response res = await http.post(
-        Uri.tryParse(absensiUrl)!,
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $token',
-        },
-        body: jsonEncode(requestBody),
+      var response = await dio.post(
+        absensiUrl,
+        options: diopack.Options(
+          headers: {
+            'Accept': 'application/json',
+            'Authorization': 'Bearer $token',
+          },
+          sendTimeout: const Duration(minutes: 2),
+        ),
+        data: diopack.FormData.fromMap(requestBody),
       );
-      if (res.statusCode == 200) {
+      if (response.statusCode == 200) {
         controller?.stopCamera();
 
         bottomsheet(
-          'Yay! Berhasil',
-          'Anda Berhasil Absen',
-          () {
+          title: 'Yah Berhasil!',
+          subtitle: 'Anda berhasil absen',
+          image: 'assets/images/happy-illustration.png',
+          onTap: () {
             Get.back();
             controller?.resumeCamera();
           },
         );
 
-        print(res.body);
+        print(response.data);
 
-        return res.body;
+        return response.data;
       }
 
-      if (res.statusCode == 400) {
+      if (response.statusCode == 400) {
         controller?.stopCamera();
-
-        bottomsheet('Yah! Gagal', 'Qr code', () {
-          Get.back();
-          controller?.resumeCamera();
-        });
-
-        print(res.statusCode);
+        bottomsheet(
+          title: 'Yah Gagal!',
+          subtitle: 'Qr code tidak valid',
+          image: 'assets/images/sad-illustration.png',
+          onTap: () {
+            Get.back();
+            controller?.resumeCamera();
+          },
+        );
+        print(response.statusCode);
       }
 
-      if (res.statusCode == 401) {
+      if (response.statusCode == 401) {
         controller?.stopCamera();
 
-        bottomsheet('Yah! Gagal', 'Anda sudah absen pada matkul ini', () {
-          Get.back();
-          controller?.resumeCamera();
-        });
+        bottomsheet(
+          title: 'Yah Gagal!',
+          subtitle: 'Anda sudah absen pada matkul ini',
+          image: 'assets/images/sad-illustration.png',
+          onTap: () {
+            Get.back();
+            controller?.resumeCamera();
+          },
+        );
 
-        print(res.statusCode);
+        print(response.statusCode);
       }
-      if (res.statusCode == 402) {
+      if (response.statusCode == 402) {
         controller?.stopCamera();
 
-        bottomsheet('Yah! Gagal', 'Gagal absen', () {
-          Get.back();
-          controller?.resumeCamera();
-        });
+        bottomsheet(
+          title: 'Yah Gagal!',
+          subtitle: 'Gagal absen',
+          image: 'assets/images/sad-illustration.png',
+          onTap: () {
+            Get.back();
+            controller?.resumeCamera();
+          },
+        );
 
-        print(res.statusCode);
+        print(response.statusCode);
       }
     } catch (e) {
       print(e);
@@ -250,9 +258,10 @@ class ScanController extends GetxController {
       controller?.stopCamera();
 
       bottomsheet(
-        'Yah! Gagal Login',
-        'Kesalahan Tidak Diketahui',
-        () {
+        title: 'Yah Gagal!',
+        subtitle: 'Kesalahan tidak diketahui',
+        image: 'assets/images/sad-illustration.png',
+        onTap: () {
           Get.back();
           controller?.resumeCamera();
         },

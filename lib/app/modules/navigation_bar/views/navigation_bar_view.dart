@@ -1,9 +1,7 @@
 import 'package:absensi_mahardika/app/modules/profile/controllers/profile_controller.dart';
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
-
 import '../controllers/navigation_bar_controller.dart';
 
 class NavigationBarView extends GetView<NavigationBarController> {
@@ -33,3 +31,4 @@ class NavigationBarView extends GetView<NavigationBarController> {
     );
   }
 }
+

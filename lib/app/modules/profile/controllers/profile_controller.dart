@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:absensi_mahardika/app/data/totalAbsen_model.dart';
 import 'package:absensi_mahardika/app/modules/home/controllers/home_controller.dart';
 import 'package:absensi_mahardika/app/routes/app_pages.dart';
@@ -7,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import "package:http/http.dart" as http;
+import 'package:dio/dio.dart' as dioPackage;
 
 class ProfileController extends GetxController {
   final RxBool theme = false.obs;
@@ -48,6 +51,24 @@ class ProfileController extends GetxController {
       }
     } catch (e) {}
   }
+
+  // Future getJadwal(requestBody) async {
+  //   try {
+  //     var res = await dio.post(
+  //       jadwalUrl,
+  //       data: dioPackage.FormData.fromMap(requestBody),
+  //     );
+  //     print("get jadwal");
+  //     print(res);
+  //     log(res.realUri.toString());
+  //     if (res.statusCode == 200) {
+  //       return res.data;
+  //     }
+  //   } catch (e) {
+  //     print(e);
+  //     return null;
+  //   }
+  // }
 
   @override
   void onInit() {

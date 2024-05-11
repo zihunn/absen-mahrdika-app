@@ -1,4 +1,6 @@
 import 'package:absensi_mahardika/app/modules/edit_profil/views/edit_profil_view.dart';
+import 'package:absensi_mahardika/app/utils/network.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:absensi_mahardika/app/modules/profile/controllers/profile_controller.dart';
 import 'package:absensi_mahardika/app/utils/color.dart';
@@ -26,7 +28,6 @@ class _CardSettingState extends State<CardSetting> {
     bool isDarkMode = storage.read('darkmode');
 
     return Container(
-      height: 225,
       width: Get.width,
       padding: const EdgeInsets.all(5),
       decoration: BoxDecoration(
@@ -52,8 +53,10 @@ class _CardSettingState extends State<CardSetting> {
         children: [
           CardListTile(
             onTap: () {
-              Get.to(() => const EditProfilView(),
-                  transition: Transition.rightToLeft,);
+              Get.to(
+                () => const EditProfilView(),
+                transition: Transition.rightToLeft,
+              );
             },
             leading: const Icon(
               Icons.person_2_rounded,
@@ -64,9 +67,23 @@ class _CardSettingState extends State<CardSetting> {
             ),
           ),
           const Divider(),
+          CardListTile(
+              onTap: () {
+                Map<String, dynamic> jadwal = {
+                  'npm': dataUser.value.account?.npm ??
+                      controller.dataUserLocal['account']['npm'],
+                };
+                // controller.getJadwal(jadwal);
+              },
+              leading: const Icon(
+                CupertinoIcons.refresh,
+              ),
+              text: 'perbarui_data'.tr,
+              trailing: const SizedBox()),
+          const Divider(),
           Obx(() {
             return CardListTile(
-              onTap: (){},
+              onTap: () {},
               leading: const Icon(
                 Icons.light_mode,
                 size: 24.0,
@@ -122,8 +139,7 @@ class _CardSettingState extends State<CardSetting> {
           }),
           const Divider(),
           CardListTile(
-              onTap: (){},
-
+            onTap: () {},
             leading: const Icon(
               Icons.translate_rounded,
               size: 24.0,

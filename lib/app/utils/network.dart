@@ -10,16 +10,27 @@ GetStorage box = GetStorage();
 var dataUserLocal = box.read('dataUser');
 
 var dio = Dio();
-String baseUrl = '192.168.1.16:8000';
-String loginUrl = 'http://192.168.1.16:8000/api/login';
-String logoutUrl = 'http://192.168.1.16:8000/api/user/logout';
-String dashboardUrl = 'http://192.168.1.16:8000/api/user/me';
-String registerUrl = 'http://192.168.1.16:8000/api/register';
-String absensiUrl = 'http://192.168.1.16:8000/api/absensi';
-String jadwalUrl = 'http://192.168.1.16:8000/api/jadwal';
-String GetJadwalUrl = 'http://192.168.1.16:8000/api/jadwal/show';
-String editProfilUrl = 'http://192.168.1.16:8000/api/user/';
+String baseUrl = 'https://api-mobile.lkp-ppik.id';
+String loginUrl = '$baseUrl/api/login';
+String logoutUrl = '$baseUrl/api/user/logout';
+String dashboardUrl = '$baseUrl/api/user/me';
+String registerUrl = '$baseUrl/api/register';
+String absensiUrl = '$baseUrl/api/absensi';
+String jadwalUrl = '$baseUrl/api/jadwal';
+String showMhswPresensiUrl = '$baseUrl/api/presensi/mhsw';
+String presensiUrl = '$baseUrl/api/presensi';
+String postJadwalDosenUrl = '$baseUrl/api/jadwal/dosen';
+String getJadwalDosenUrl = '$baseUrl/api/jadwal/dosen';
+String GetJadwalUrl = '$baseUrl/api/jadwal/show';
+String editProfilUrl = '$baseUrl/api/user/';
+String perizinanUrl = '$baseUrl/api/perizinan';
+String searchMhswUrl = '$baseUrl/api/search';
+String searcDosenUrl = '$baseUrl/api/search/dosen';
+String getAllMk = '$baseUrl/api/dosen/show';
+String getKrsUrl = '$baseUrl/api/krs';
+String getMkPerizinanUrl = '$baseUrl/api/perizinan/showmk/';
+String detailPresensiMhsw = '$baseUrl/api/presensi/mhsw/detail';
 String historyAbsenUrl =
-    'http://192.168.1.16:8000/api/absensi/show?npm=322E0008&status=hadir&paginate=10&page=';
+    '$baseUrl/api/absensi/show?npm=322E0008&status=hadir&paginate=10&page=';
 
-String token = dataUser.value. account!.rememberToken!;
+String token = box.read('token');

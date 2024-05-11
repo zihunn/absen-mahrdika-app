@@ -53,7 +53,7 @@ class _JadwalTabStBody extends State<JadwalBody> {
                             child: GestureDetector(
                               onTap: () {
                                 Map<String, dynamic> requestParams = {
-                                  'npm': dataUser.value.account!.npm ,
+                                  'npm': dataUser.value.account!.npm,
                                   'date': jadwalCtrl.selectedDate.value
                                       .toString()
                                       .split(' ')
@@ -66,7 +66,7 @@ class _JadwalTabStBody extends State<JadwalBody> {
                               ),
                             ),
                           )
-                        : jadwalCtrl.jadwalData!.data == null
+                        : jadwalCtrl.jadwalData?.data == null
                             ? Padding(
                                 padding: const EdgeInsetsDirectional.only(
                                   top: 30,
@@ -95,6 +95,10 @@ class _JadwalTabStBody extends State<JadwalBody> {
                                             data.jamMulai!.substring(0, 5),
                                         jamSelesai:
                                             data.jamSelesai!.substring(0, 5),
+                                        // matkul: 'asd',
+                                        // dosen: 'asd',
+                                        // jamMulai: 'asd',
+                                        // jamSelesai: 'asdsd',
                                         color: jadwalCtrl.imageAndColor[index]
                                             ['color'],
                                         image: jadwalCtrl.imageAndColor[index]
@@ -120,11 +124,14 @@ class _JadwalTabStBody extends State<JadwalBody> {
                     image: "assets/icons/calendar.png",
                     showClock: false,
                     name1: "matkul_hari_ini".tr,
+                    // value1: '2',
                     value1: jadwalCtrl.isDataLoading.value
                         ? '0'
                         : jadwalCtrl.jadwalData!.total.toString(),
                     name2: "SKS",
-                    value2: dataUser.value.account!.sks.toString()),
+                    // value2:'asd'
+                    value2: dataUser.value.account!.sks.toString(),
+                    ),
               ),
             ),
           ],

@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -51,6 +52,7 @@ class _QTextFieldAuthState extends State<QTextFieldAuth> {
   Widget build(BuildContext context) {
     return Container(
         child: TextFormField(
+      // textCapitalization: TextCapitalization.characters,
       controller: widget.textC,
       obscureText: widget.obscure,
       decoration: InputDecoration(
@@ -184,10 +186,16 @@ class TextFieldEditProfil extends StatelessWidget {
                   margin: const EdgeInsets.only(top: 19),
                   height: 10,
                   width: Get.width,
-                  child: TextField(
+                  child: TextFormField(
                     readOnly: readOnly,
                     keyboardType: type,
                     controller: controller,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        print("object");
+                      }
+                      return null;
+                    },
                     scrollPadding: EdgeInsets.only(
                         bottom: MediaQuery.of(context).viewInsets.bottom),
                     style: const TextStyle(
@@ -211,4 +219,55 @@ class TextFieldEditProfil extends StatelessWidget {
       ),
     );
   }
+}
+
+Widget textFieldNormal(
+    {required label,
+    required TextEditingController textCtrl,
+    required bool readOnly,
+    required Function ontap,
+    required Function onChanged,
+    required Function validator,
+    required TextInputType textInputType,
+    required int maxLines,
+    final GestureDetector? suffixIcon,
+    final bool? obscureText,
+    required Icon icon}) {
+  return TextFormField(
+    keyboardType: textInputType,
+    controller: textCtrl,
+    readOnly: readOnly,
+    onTap: () => ontap(),
+    onChanged: (value) => onChanged(value),
+    validator: (value) => validator(value),
+    maxLines: maxLines,
+    obscureText: obscureText ?? false,
+    decoration: InputDecoration(
+        hintText: label,
+        prefixIcon: icon,
+        suffixIcon: suffixIcon,
+        isDense: true,
+        contentPadding: const EdgeInsets.all(20),
+        filled: true,
+        hintStyle: TextStyle(
+          color: Colors.grey.withOpacity(0.7),
+        ),
+        fillColor: AppColor.bluePrimary.withOpacity(0.1),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: AppColor.greyColor.withOpacity(0.4),
+          ),
+          borderRadius: const BorderRadius.all(
+            Radius.circular(12),
+          ),
+        ),
+        border: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: AppColor.greyColor.withOpacity(0.4),
+          ),
+          borderRadius: const BorderRadius.all(
+            Radius.circular(12),
+          ),
+        )),
+  );
 }

@@ -1,29 +1,24 @@
-// ignore_for_file: camel_case_types, unnecessary_new, prefer_collection_literals, unnecessary_this, unnecessary_question_mark, prefer_void_to_null
-
 class userModel {
   bool? success;
   String? message;
   Account? account;
-  int? matkul;
 
-  userModel({this.success, this.message, this.account, this.matkul});
+  userModel({this.success, this.message, this.account});
 
   userModel.fromJson(Map<String, dynamic> json) {
     success = json['success'];
     message = json['message'];
     account =
-        json['account'] != null ? new Account.fromJson(json['account']) : null;
-    matkul = json['matkul'];
+        json['account'] != null ? Account.fromJson(json['account']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['success'] = this.success;
-    data['message'] = this.message;
-    if (this.account != null) {
-      data['account'] = this.account!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['success'] = success;
+    data['message'] = message;
+    if (account != null) {
+      data['account'] = account!.toJson();
     }
-    data['matkul'] = this.matkul;
     return data;
   }
 }
@@ -32,6 +27,8 @@ class Account {
   int? id;
   String? nama;
   String? npm;
+  String? role;
+  String? dosenId;
   String? email;
   String? deviceId;
   String? tanggalLahir;
@@ -48,13 +45,19 @@ class Account {
   String? prodiID;
   String? programID;
   String? tahunId;
-  Null? emailVerifiedAt;
+  String? emailVerifiedAt;
+  String? nidn;
+  String? tempatLahir;
+  String? gelarDepan;
+  String? gelarBelakang;
   String? rememberToken;
 
   Account(
       {this.id,
       this.nama,
       this.npm,
+      this.role,
+      this.dosenId,
       this.email,
       this.deviceId,
       this.tanggalLahir,
@@ -72,12 +75,18 @@ class Account {
       this.programID,
       this.tahunId,
       this.emailVerifiedAt,
+      this.nidn,
+      this.tempatLahir,
+      this.gelarDepan,
+      this.gelarBelakang,
       this.rememberToken});
 
   Account.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     nama = json['nama'];
     npm = json['npm'];
+    role = json['role'];
+    dosenId = json['dosen_id'];
     email = json['email'];
     deviceId = json['device_id'];
     tanggalLahir = json['tanggal_lahir'];
@@ -95,32 +104,42 @@ class Account {
     programID = json['programID'];
     tahunId = json['tahun_id'];
     emailVerifiedAt = json['email_verified_at'];
+    nidn = json['nidn'];
+    tempatLahir = json['tempat_lahir'];
+    gelarDepan = json['gelar_depan'];
+    gelarBelakang = json['gelar_belakang'];
     rememberToken = json['remember_token'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['nama'] = this.nama;
-    data['npm'] = this.npm;
-    data['email'] = this.email;
-    data['device_id'] = this.deviceId;
-    data['tanggal_lahir'] = this.tanggalLahir;
-    data['no_hp'] = this.noHp;
-    data['image'] = this.image;
-    data['sks'] = this.sks;
-    data['hadir'] = this.hadir;
-    data['izin'] = this.izin;
-    data['sakit'] = this.sakit;
-    data['alpa'] = this.alpa;
-    data['jenis_kelamin'] = this.jenisKelamin;
-    data['prodi_id'] = this.prodiId;
-    data['prodi_en'] = this.prodiEn;
-    data['prodiID'] = this.prodiID;
-    data['programID'] = this.programID;
-    data['tahun_id'] = this.tahunId;
-    data['email_verified_at'] = this.emailVerifiedAt;
-    data['remember_token'] = this.rememberToken;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['nama'] = nama;
+    data['npm'] = npm;
+    data['role'] = role;
+    data['dosen_id'] = dosenId;
+    data['email'] = email;
+    data['device_id'] = deviceId;
+    data['tanggal_lahir'] = tanggalLahir;
+    data['no_hp'] = noHp;
+    data['image'] = image;
+    data['sks'] = sks;
+    data['hadir'] = hadir;
+    data['izin'] = izin;
+    data['sakit'] = sakit;
+    data['alpa'] = alpa;
+    data['jenis_kelamin'] = jenisKelamin;
+    data['prodi_id'] = prodiId;
+    data['prodi_en'] = prodiEn;
+    data['prodiID'] = prodiID;
+    data['programID'] = programID;
+    data['tahun_id'] = tahunId;
+    data['email_verified_at'] = emailVerifiedAt;
+    data['nidn'] = nidn;
+    data['tempat_lahir'] = tempatLahir;
+    data['gelar_depan'] = gelarDepan;
+    data['gelar_belakang'] = gelarBelakang;
+    data['remember_token'] = rememberToken;
     return data;
   }
 }

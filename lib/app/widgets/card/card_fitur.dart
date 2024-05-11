@@ -2,17 +2,19 @@
 // ignore_for_file: camel_case_types, prefer_typing_uninitialized_variables
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import 'package:absensi_mahardika/app/utils/style.dart';
-import 'package:get/get.dart';
 
 class FiturCard extends StatefulWidget {
   final String image;
   final String name;
+  final String? subtitle;
   const FiturCard({
     Key? key,
     required this.image,
     required this.name,
+    this.subtitle,
   }) : super(key: key);
 
   @override
@@ -23,7 +25,6 @@ class _FiturCardState extends State<FiturCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 80,
       width: 105,
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
@@ -49,8 +50,8 @@ class _FiturCardState extends State<FiturCard> {
         children: [
           Image.asset(
             widget.image,
-            width: 30,
-            height: 30,
+            width: 50,
+            height: 50,
           ),
           const SizedBox(
             height: 10.0,
@@ -58,7 +59,19 @@ class _FiturCardState extends State<FiturCard> {
           Text(
             widget.name,
             style: Style.Header1.copyWith(
+              fontSize: 14.0,
+              color: context.theme.textTheme.bodyLarge!.color,
+            ),
+          ),
+          const SizedBox(
+            height: 5.0,
+          ),
+          Text(
+            widget.subtitle ?? '',
+            overflow: TextOverflow.ellipsis,
+            style: Style.Header1.copyWith(
               fontSize: 12.0,
+              fontFamily: 'Signika',
               color: context.theme.textTheme.bodyLarge!.color,
             ),
           ),

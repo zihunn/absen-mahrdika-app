@@ -6,14 +6,20 @@ import '../../utils/color.dart';
 class ButtonIcon extends StatelessWidget {
   final double height;
   final double width;
-  final IconData icon;
+  final IconData? icon;
   final Function onTap;
+  final Color? color;
+  final Color? colorIcon;
+  final Widget? widget;
   const ButtonIcon({
     Key? key,
     required this.height,
     required this.width,
     required this.icon,
     required this.onTap,
+    this.color,
+    this.colorIcon,
+    this.widget,
   }) : super(key: key);
 
   @override
@@ -28,7 +34,7 @@ class ButtonIcon extends StatelessWidget {
       height: height,
       width: width,
       decoration: BoxDecoration(
-        color: AppColor.bluePrimary.withOpacity(0.2),
+        color:color?? AppColor.bluePrimary.withOpacity(0.2),
         borderRadius: const BorderRadius.all(
           Radius.circular(12.0),
         ),
@@ -39,11 +45,11 @@ class ButtonIcon extends StatelessWidget {
             overlayColor: MaterialStateColor.resolveWith(
               (states) => AppColor.greyColor.withOpacity(0.8),
             ),
-            iconColor: const MaterialStatePropertyAll(
-              AppColor.blackSoftColor,
+            iconColor:  MaterialStatePropertyAll(
+             colorIcon?? AppColor.blackSoftColor,
             )),
         onPressed: () => onTap(),
-        child: Icon(
+        child:widget?? Icon(
           icon,
           size: 22.0,
         ),

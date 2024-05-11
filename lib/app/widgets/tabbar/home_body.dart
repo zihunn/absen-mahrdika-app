@@ -49,28 +49,30 @@ class _HomeBody extends State<HomeBody> {
                   const SizedBox(
                     height: 20.0,
                   ),
-                  SizedBox(
-                    width: Get.width,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        GestureDetector(
-                          onTap: () => Get.toNamed(Routes.CALENDAR),
-                          child: FiturCard(
-                            image: "assets/icons/hasil-studi.png",
-                            name: "kalender".tr,
-                          ),
-                        ),
-                        FiturCard(
-                          image: "assets/icons/hasil-studi.png",
-                          name: "hasil_studi".tr,
-                        ),
-                        FiturCard(
-                          image: "assets/icons/hasil-studi.png",
-                          name: "transkrip".tr,
-                        ),
-                      ],
+                  
+                  GridView.builder(
+                    padding: EdgeInsets.zero,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      childAspectRatio: 0.9,
+                      crossAxisCount: 3,
+                      mainAxisSpacing: 20,
+                      crossAxisSpacing: 6,
                     ),
+                    itemCount: controller.listFitur.length,
+                    shrinkWrap: true,
+                    physics: const ScrollPhysics(),
+                    itemBuilder: (BuildContext context, int index) {
+                      var data = controller.listFitur[index];
+                      return GestureDetector(
+                        onTap: data['onTap'],
+                        child: FiturCard(
+                          image: data['image'],
+                          name: data['name'],
+                          subtitle: data['subtitle'],
+                        ),
+                      );
+                    },
                   ),
                   const SizedBox(
                     height: 40.0,
@@ -124,30 +126,25 @@ class _HomeBody extends State<HomeBody> {
             Positioned(
               left: 22,
               top: 20,
-              child: StreamBuilder<totalAbsenModel>(
-                stream: controller.streamAbsen(dataUser.value.account!.npm!),
-                builder: (context, snapshot) {
-                  var data = snapshot.data;
-                  return CardTabbar(
-                    image: "assets/icons/scan.png",
-                    days: controller.days,
-                    showClock: true,
-                    name1: "Sks",
-                    value1: dataUser.value.account!.sks.toString(),
-                    name2: "hadir".tr,
-                    value2: snapshot.hasData ? "${data!.data!.hadir}" : "-",
-                    onTap1: () {
-                      navCtrl.changeNavIndex(1);
-                    },
-                    onTap2: () {
-                      navCtrl.changeNavIndex(3);
-                      print(navCtrl.navIndex.value);
-                    },
-                  );
+              child: CardTabbar(
+                image: "assets/icons/scan.png",
+                days: controller.days,
+                showClock: true,
+                name1: "Sks",
+                // value1: dataUser.value.account?.sks.toString() ?? 'null',
+                value1: '22',
+                name2: "hadir".tr,
+                // value2: snapshot.hasData ? "${data!.data!.hadir}" : "-",
+                value2: "1",
+                onTap1: () {
+                  navCtrl.changeNavIndex(1);
+                },
+                onTap2: () {
+                  navCtrl.changeNavIndex(3);
+                  print(navCtrl.navIndex.value);
                 },
               ),
             ),
-          
           ],
         ),
       ),
