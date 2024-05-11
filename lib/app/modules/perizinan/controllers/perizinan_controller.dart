@@ -25,7 +25,7 @@ class PerizinanController extends GetxController {
         'Authorization': 'Bearer $token',
       }).timeout(const Duration(minutes: 2));
 
-      // print(response.body);
+      print(response.body);
       print(response.statusCode);
 
       if (response.statusCode == 200) {
