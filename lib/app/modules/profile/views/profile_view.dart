@@ -9,14 +9,13 @@ import 'package:absensi_mahardika/app/widgets/image_rotate/image_rotate.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'dart:math' as math;
-import '../../../utils/network.dart';
 import '../controllers/profile_controller.dart';
 
 class ProfileView extends GetView<ProfileController> {
   const ProfileView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    Get.put(ProfileController());
+    final controller = Get.put(ProfileController());
     return Scaffold(
       backgroundColor: context.theme.primaryColor,
       body: SizedBox(
@@ -86,13 +85,13 @@ class ProfileView extends GetView<ProfileController> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Text(
-                            dataUser.value.account!.nama!,
+                            controller.dataUserLocal['account']['nama'],
                             style: Style.Header1.copyWith(
                                 fontFamily: 'SignikaSemi',
                                 color: context.textTheme.bodyLarge!.color),
                           ),
                           Text(
-                            dataUser.value.account!.npm!,
+                            controller.dataUserLocal['account']['npm'],
                             style: Style.Header1.copyWith(
                               fontFamily: 'SignikaRegular',
                               color: AppColor.greyColor,
@@ -124,31 +123,29 @@ class ProfileView extends GetView<ProfileController> {
                       ),
                     ),
                     Positioned(
-                      left: Get.width / 2.7,
-                      top: 5,
-                      child: Obx(() => Container(
-                            height: 100,
-                            width: 100,
-                            decoration: BoxDecoration(
-                              color: AppColor.greyColor,
-                              shape: BoxShape.circle,
-                              image: dataUser.value.account?.image == null
-                                  ? const DecorationImage(
-                                      image: AssetImage(
-                                          'assets/images/noimage.png'),
-                                      fit: BoxFit.cover,
-                                    )
-                                  : DecorationImage(
-                                      fit: BoxFit.cover,
-                                      image: NetworkImage(
-                                        dataUser.value.account?.image ??
-                                            controller.dataUserLocal['account']
-                                                ['image'],
-                                      ),
-                                    ),
-                            ),
-                          )),
-                    ),
+                        left: Get.width / 2.7,
+                        top: 5,
+                        child: Container(
+                          height: 100,
+                          width: 100,
+                          decoration: BoxDecoration(
+                            color: AppColor.greyColor,
+                            shape: BoxShape.circle,
+                            image: controller.dataUserLocal['account']
+                                        ['image'] ==
+                                    null
+                                ? const DecorationImage(
+                                    image:
+                                        AssetImage('assets/images/noimage.png'),
+                                    fit: BoxFit.cover,
+                                  )
+                                : DecorationImage(
+                                    fit: BoxFit.cover,
+                                    image: NetworkImage(controller
+                                        .dataUserLocal['account']['image']),
+                                  ),
+                          ),
+                        )),
                   ],
                 ),
               ),

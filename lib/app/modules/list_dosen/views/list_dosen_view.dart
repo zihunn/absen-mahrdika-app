@@ -72,7 +72,7 @@ class ListDosenView extends GetView<ListDosenController> {
                           if (value.isNotEmpty) {
                             Map<String, dynamic> requestParams = {
                               'nama': value,
-                              'excludeName': dataUser.value.account!.nama,
+                              'excludeName': dataUserLocal['account']['nama'],
                             };
                             controller.isSearch.value = true;
                             controller.searchDosen(requestParams);

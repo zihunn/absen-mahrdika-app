@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:absensi_mahardika/app/utils/color.dart';
@@ -5,6 +6,7 @@ import 'package:absensi_mahardika/app/utils/network.dart';
 import 'package:dio/dio.dart' as diopack;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -14,27 +16,24 @@ import '../../../utils/bottomsheet.dart';
 class EditProfilController extends GetxController {
   RxInt indexGender = 0.obs;
   var isDataLoading = false.obs;
-  RxString gender = '${dataUser.value.account?.jenisKelamin}'.obs;
+  static  GetStorage box = GetStorage();
+  var dataUser = box.read('dataUser');
+  RxString gender = '${dataUserLocal['account']['jenis_kelamin']}'.obs;
   RxString image = ''.obs;
   final picker = ImagePicker();
-  RxString selectedDate = '${dataUser.value.account?.tanggalLahir}'.obs;
+  RxString selectedDate = '${dataUserLocal['account']['tanggal_lahir']}'.obs;
   var dataUserModel = userModel().obs;
   File? img;
   late var nameCtrl = TextEditingController(
-    text:
-        dataUser.value.account?.nama == '' ? '-' : dataUser.value.account!.nama,
+    text: dataUserLocal['account']['nama'],
   );
 
   late var noCtrl = TextEditingController(
-    text:
-        dataUser.value.account?.noHp == '' ? '-' : dataUser.value.account!.noHp,
+    text: dataUserLocal['account']['noHp'],
   );
 
-  late var emailCtrl = TextEditingController(
-    text: dataUser.value.account?.email == ''
-        ? '-'
-        : dataUser.value.account!.email,
-  );
+  late var emailCtrl =
+      TextEditingController(text: dataUserLocal['account']['email']);
 
 //Crop Image
   cropImage(File imgFile) async {
@@ -111,7 +110,10 @@ class EditProfilController extends GetxController {
       if (response.statusCode == 200) {
         // print(dataUser.value.account!.image);
         print(response.data);
-        dataUser.value = userModel.fromJson(response.data);
+        // if (box.read('dataUser') != null) {
+        //   box.remove('dataUser');
+        // }
+        box.write('dataUser', jsonDecode(response.data));
         bottomsheet(
           title: 'Yay Berhasil!',
           subtitle: 'Data kamu berhasil diubah',

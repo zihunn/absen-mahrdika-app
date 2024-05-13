@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:absensi_mahardika/app/data/history_perizinan_model.dart';
 import 'package:absensi_mahardika/app/modules/form_perizinan/views/form_perizinan_view.dart';
 import 'package:absensi_mahardika/app/widgets/card/card_history_perizinan.dart';
 import 'package:absensi_mahardika/app/widgets/card/card_mk_dosen.dart';
@@ -60,9 +61,9 @@ class PerizinanView extends GetView<PerizinanController> {
       ),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(15, 10, 15, 0),
-        child: FutureBuilder<MkPerizinanModel?>(
-          future: controller.getMk(
-            dataUser.value.account?.npm ?? dataUserLocal['account']['npm'],
+        child: FutureBuilder<HistoryPerizinanModel?>(
+          future: controller.show(
+            dataUserLocal['account']['npm'],
           ),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
@@ -119,6 +120,13 @@ class PerizinanView extends GetView<PerizinanController> {
             );
           },
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.add),
+        onPressed: () {
+          Get.to(() => const FormPerizinanView(),
+              transition: Transition.rightToLeft);
+        },
       ),
     );
   }

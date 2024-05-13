@@ -26,7 +26,7 @@ class HistoryAbsenController extends GetxController {
   final scrollControllerIzin = ScrollController();
   final scrollControllerSakit = ScrollController();
   final scrollControllerAlpa = ScrollController();
-  static var dataUser = Get.put(AuthController()).dataUser.value;
+  // static var dataUser = Get.put(AuthController()).dataUser.value;
 
  
 
@@ -82,25 +82,25 @@ class HistoryAbsenController extends GetxController {
   }
 
   Map<String, dynamic> requestParamsHadir = {
-    'npm': dataUser.account!.npm,
+    'npm': dataUserLocal['account']['npm'],
     'status': 'hadir',
     'paginate': '6',
     'page': '1'
   };
   Map<String, dynamic> requestParamsIzin = {
-    'npm': dataUser.account!.npm,
+    'npm': dataUserLocal['account']['npm'],
     'status': 'izin',
     'paginate': '6',
     'page': '1'
   };
   Map<String, dynamic> requestParamsSakit = {
-    'npm': dataUser.account!.npm,
+    'npm': dataUserLocal['account']['npm'],
     'status': 'sakit',
     'paginate': '6',
     'page': '1'
   };
   Map<String, dynamic> requestParamsAlpa = {
-    'npm': dataUser.account!.npm,
+    'npm': dataUserLocal['account']['npm'],
     'status': 'alpa',
     'paginate': '6',
     'page': '1'
@@ -121,7 +121,7 @@ class HistoryAbsenController extends GetxController {
       print('=========');
 
       Map<String, dynamic> requestParams = {
-        'npm': dataUser.account!.npm ,
+        'npm': dataUserLocal['account']['npm'],
         'status': status.value,
         'paginate': '6',
         'page': '${page.value}'

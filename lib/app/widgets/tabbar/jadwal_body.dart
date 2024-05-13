@@ -53,7 +53,7 @@ class _JadwalTabStBody extends State<JadwalBody> {
                             child: GestureDetector(
                               onTap: () {
                                 Map<String, dynamic> requestParams = {
-                                  'npm': dataUser.value.account!.npm,
+                                  'npm': dataUserLocal['account']['npm'],
                                   'date': jadwalCtrl.selectedDate.value
                                       .toString()
                                       .split(' ')
@@ -112,26 +112,24 @@ class _JadwalTabStBody extends State<JadwalBody> {
             ),
             Positioned(
               left: 22,
-              child: Obx(
-                () => CardTabbar(
-                    days: DateFormat('EEEE, d MMM yyyy', "id_ID")
-                        .format(jadwalCtrl.selectedDate.value),
-                    onTapDatePicker: () {
-                      jadwalCtrl.datePicker();
-                    },
-                    onTap1: () {},
-                    onTap2: () {},
-                    image: "assets/icons/calendar.png",
-                    showClock: false,
-                    name1: "matkul_hari_ini".tr,
-                    // value1: '2',
-                    value1: jadwalCtrl.isDataLoading.value
-                        ? '0'
-                        : jadwalCtrl.jadwalData!.total.toString(),
-                    name2: "SKS",
-                    // value2:'asd'
-                    value2: dataUser.value.account!.sks.toString(),
-                    ),
+              child: CardTabbar(
+                days: DateFormat('EEEE, d MMM yyyy', "id_ID")
+                    .format(jadwalCtrl.selectedDate.value),
+                onTapDatePicker: () {
+                  jadwalCtrl.datePicker();
+                },
+                onTap1: () {},
+                onTap2: () {},
+                image: "assets/icons/calendar.png",
+                showClock: false,
+                name1: "matkul_hari_ini".tr,
+                // value1: '2',
+                value1: jadwalCtrl.isDataLoading.value
+                    ? '0'
+                    : jadwalCtrl.jadwalData!.total.toString(),
+                name2: "SKS",
+                // value2:'asd'
+                value2: dataUserLocal['account']['sks'].toString(),
               ),
             ),
           ],

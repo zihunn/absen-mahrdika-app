@@ -27,7 +27,7 @@ class JadwalKuliahController extends GetxController
       selectedDate.value = pickedDate;
 
       Map<String, dynamic> requestParams = {
-        'npm': dataUser.value.account!.npm,
+        'npm': dataUserLocal['account']['npm'],
         'date': selectedDate.value.toString().split(' ').first
       };
 
@@ -41,7 +41,7 @@ class JadwalKuliahController extends GetxController
     try {
       isDataLoading(true);
 
-      var url = Uri.https('api.lkp-ppik.id', '/api/jadwal', requestParams);
+      var url = Uri.https(domainUrl, '/api/jadwal', requestParams);
       print(url);
       await Future.delayed(const Duration(seconds: 1));
       http.Response response = await http.get(url, headers: {
@@ -98,7 +98,7 @@ class JadwalKuliahController extends GetxController
   void onInit() {
     // TODO: implement onInit
     Map<String, dynamic> requestBody = {
-      'npm': dataUser.value.account!.npm,
+      'npm': dataUserLocal['account']['npm'],
       'date': selectedDate.value.toString().split(' ').first
     };
     getJadwal(requestBody);

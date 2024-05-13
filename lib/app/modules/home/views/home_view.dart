@@ -66,57 +66,59 @@ class HomeView extends GetView<HomeController> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Obx(() {
-                          return Row(
-                            children: [
-                              Container(
-                                height: 45,
-                                width: 45,
-                                decoration: BoxDecoration(
-                                  color: AppColor.greyColor,
-                                  shape: BoxShape.circle,
-                                  image: dataUser.value.account?.image == null
-                                      ? const DecorationImage(
-                                          image: AssetImage(
-                                              'assets/images/noimage.png'),
-                                          fit: BoxFit.cover,
-                                        )
-                                      : DecorationImage(
-                                          fit: BoxFit.cover,
-                                          image: NetworkImage(
-                                            dataUser.value.account!.image!,
+                        Row(
+                          children: [
+                            Container(
+                              height: 45,
+                              width: 45,
+                              decoration: BoxDecoration(
+                                color: AppColor.greyColor,
+                                shape: BoxShape.circle,
+                                image:
+                                    dataUserLocal['account']?['image'] == null
+                                        ? const DecorationImage(
+                                            image: AssetImage(
+                                                'assets/images/noimage.png'),
+                                            fit: BoxFit.cover,
+                                          )
+                                        : DecorationImage(
+                                            fit: BoxFit.cover,
+                                            image: NetworkImage(
+                                              dataUserLocal['account']['image'],
+                                            ),
                                           ),
-                                        ),
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 15.0,
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  controller.dataUserLocal['account']
+                                          ?['nama'] ??
+                                      '-',
+                                  style: Style.Subtitle1.copyWith(
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                  ),
                                 ),
-                              ),
-                              const SizedBox(
-                                width: 15.0,
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    dataUser.value.account?.nama ?? 'null',
-                                    style: Style.Subtitle1.copyWith(
-                                      color: Colors.white,
-                                      fontSize: 18,
-                                    ),
+                                Text(
+                                  controller.dataUserLocal['account']['npm'] ??
+                                      '-',
+                                  style: Style.Subtitle1.copyWith(
+                                    color: Colors.white,
+                                    fontSize: 12,
+                                    decoration: TextDecoration.underline,
+                                    fontFamily: 'SignikaRegular',
                                   ),
-                                  Text(
-                                    dataUser.value.account?.npm ?? 'null',
-                                    style: Style.Subtitle1.copyWith(
-                                      color: Colors.white,
-                                      fontSize: 12,
-                                      decoration: TextDecoration.underline,
-                                      fontFamily: 'SignikaRegular',
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          );
-                        }),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                         const Icon(
                           Ionicons.notifications_outline,
                           size: 24.0,

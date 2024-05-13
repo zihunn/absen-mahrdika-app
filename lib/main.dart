@@ -12,6 +12,8 @@ import 'app/routes/app_pages.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init();
+  await GetStorage.init('dataUser');
+
   await initializeDateFormatting('id_ID', null).then(
     (_) => runApp(const MyApp()),
   );

@@ -50,7 +50,7 @@ class HomeDosenController extends GetxController {
   }
 
   Future getJadwalDosen(requestParams) async {
-    String? tkn = token ?? authCtrl.dataUser.value.account?.rememberToken;
+    String? tkn = token ?? dataUserLocal['account']['remember_token'];
     try {
       isLoading.value = true;
       var url = Uri.http(baseUrl, 'api/jadwal/dosen', requestParams);
@@ -94,8 +94,7 @@ class HomeDosenController extends GetxController {
   @override
   void onInit() {
     Map<String, dynamic> requestParams = {
-      'dosen_id': dataUser.value.account?.dosenId ??
-          dataUserLocal['account']['dosen_id'],
+      'dosen_id': dataUserLocal['account']['dosen_id'],
       'date': currentDateTime.value.toString().split(' ').first
     };
     getJadwalDosen(requestParams);

@@ -38,18 +38,23 @@ class ProfileController extends GetxController {
   void logout(String token) async {
     try {
       http.Response response = await http.get(
-        Uri.tryParse(logoutUrl)!,
+        Uri.https(domainUrl, '/api/user/logout'),
         headers: {
           'Accept': 'application/json',
           'Authorization': 'Bearer $token',
         },
       );
-
+      print(response.body);
       if (response.statusCode == 200) {
-        box.remove('token');
+        await box.remove('token');
+        await box.remove('dataUser');
+        // await box.erase();
+        print(box.read('dataUser'));
         Get.offAllNamed(Routes.LOGIN);
       }
-    } catch (e) {}
+    } catch (e) {
+      print(e);
+    }
   }
 
   // Future getJadwal(requestBody) async {
@@ -76,5 +81,3 @@ class ProfileController extends GetxController {
     super.onInit();
   }
 }
-
-

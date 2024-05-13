@@ -5,12 +5,13 @@ import 'package:get_storage/get_storage.dart';
 
 import '../controllers/auth_controller.dart';
 
-Rx<userModel> dataUser = Get.put(AuthController()).dataUser;
+// Rx<userModel> dataUser = Get.put(AuthController()).dataUser;
 GetStorage box = GetStorage();
 var dataUserLocal = box.read('dataUser');
 
 var dio = Dio();
 String baseUrl = 'https://api-mobile.lkp-ppik.id';
+String domainUrl = 'api-mobile.lkp-ppik.id';
 String loginUrl = '$baseUrl/api/login';
 String logoutUrl = '$baseUrl/api/user/logout';
 String dashboardUrl = '$baseUrl/api/user/me';

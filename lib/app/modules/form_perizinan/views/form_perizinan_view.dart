@@ -192,8 +192,7 @@ class FormPerizinanView extends GetView<FormPerizinanController> {
                       print(data?[index - 1].presensiId);
 
                       Map<String, dynamic> requestBody = {
-                        'npm': dataUser.value.account?.npm ??
-                            dataUserLocal['account']['npm'],
+                        'npm': dataUserLocal['account']['npm'],
                         'jadwal_id': arguments[2],
                         'presensi_id': data?[index - 1].presensiId,
                         'description': controller.textCtrl.text,

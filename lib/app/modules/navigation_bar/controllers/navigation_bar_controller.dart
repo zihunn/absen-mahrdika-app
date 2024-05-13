@@ -16,6 +16,7 @@ class NavigationBarController extends GetxController {
   var navIndex = 0.obs;
   final camCtrl = Get.put(ScanController());
   final controller = PersistentTabController(initialIndex: 0);
+  final box = GetStorage();
 
   List<PersistentBottomNavBarItem> navBarItem() {
     return [
@@ -77,6 +78,9 @@ class NavigationBarController extends GetxController {
 
   @override
   void onInit() {
+    print(box.read('dataUser'));
+    box.listen(() => print('box changed'));
+
     // TODO: implement onInit
     super.onInit();
   }

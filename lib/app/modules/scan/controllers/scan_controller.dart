@@ -141,7 +141,7 @@ class ScanController extends GetxController {
       DateTime date2 = DateTime(dt2.year, dt2.month, dt2.day);
 
       Map<String, dynamic> requestBody = {
-        'npm': dataUser.value.account!.npm,
+        'npm': dataUserLocal['account']['npm'],
         'presensi_id': presensiId,
         'status': 'H',
         'nilai': '1',

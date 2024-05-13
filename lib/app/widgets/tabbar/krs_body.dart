@@ -27,7 +27,7 @@ class _KrsBodyState extends State<KrsBody> {
   Widget build(BuildContext context) {
     var controller = Get.put(KrsController());
     Map<String, dynamic> requestParams = {
-      'npm': dataUser.value.account?.npm ?? dataUserLocal['account']['npm']
+      'npm': dataUserLocal['account']['npm']
     };
     return Container(
         margin: const EdgeInsets.only(top: 95),

@@ -40,7 +40,7 @@ class KrsController extends GetxController {
 
   Future getKrs(requestParams) async {
     try {
-      var url = Uri.http(baseUrl, 'api/krs', requestParams);
+      var url = Uri.https(domainUrl, 'api/krs', requestParams);
 
       http.Response response = await http.get(url, headers: {
         'Accept': 'application/json',

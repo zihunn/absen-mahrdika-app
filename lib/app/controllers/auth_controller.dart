@@ -19,10 +19,10 @@ class AuthController extends GetxController {
   var accountUser = Account().obs;
   var nama = ''.obs;
   AndroidDeviceInfo? androidInfo;
-  final box = GetStorage();
+  static var box = GetStorage();
   var isSkipIntro = false.obs;
   var isAuth = false.obs;
-
+  var dataUserLocal = box.read('dataUser');
   Future<String> getDeviceId() async {
     var deviceInfo = DeviceInfoPlugin();
     late String deviceId;
@@ -108,30 +108,35 @@ class AuthController extends GetxController {
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode(requestBody),
       );
+      print(response.body);
       print('2.p');
-
       if (response.statusCode == 200) {
         var result = jsonDecode(response.body);
         print('3.p');
-
+        dataUser.value = userModel.fromJson(result);
+        print(box.read('dataUser'));
         if (box.read('dataUser') != null) {
           box.remove('dataUser');
         }
-        box.write('dataUser', dataUser.value);
-
-        dataUser.value = userModel.fromJson(result);
+        print(result);
+        await box.write('dataUser', result);
         print('4');
+        dataUserLocal = await box.read('dataUser');
+        print(box.read('dataUser')['account']);
 
         if (box.read('skipIntro') != null) {
           box.remove('skipIntro');
         }
-        box.write('skipIntro', true);
+        await box.write('skipIntro', true);
+
         print('5');
         if (box.read('token') != null) {
           box.remove('token');
         }
+
         isAuth.value = true;
-        var data = box.write('token', dataUser.value.account!.rememberToken!);
+        var data =
+            box.write('token', dataUserLocal['account']['remember_token']);
         print(data);
 
         Get.offAllNamed(dataUser.value.account!.role == 'Dosen'
@@ -256,18 +261,19 @@ class AuthController extends GetxController {
     }
 
     var myData = await box.read('token');
-    dashboardLogin(myData);
+    // dashboardLogin(myData);
     return true;
   }
 
   Future<void> firstInitialized() async {
     await autoLogin().then((value) {
       // box.remove('token');
-      print('firstInitialized');
       print(value);
       print(isAuth.value);
       if (value) {
         isAuth.value = true;
+        box.read('dataUser');
+        print(box.read('dataUser'));
         print('firstInitialized');
         print(value);
       }
@@ -279,6 +285,7 @@ class AuthController extends GetxController {
       print(isSkipIntro.value);
       if (value) {
         isSkipIntro.value = true;
+
         print('skipIntro');
         print(value);
       }

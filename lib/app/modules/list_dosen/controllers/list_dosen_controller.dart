@@ -85,8 +85,7 @@ class ListDosenController extends GetxController {
         dosenData.value = SerachDosenModel.fromJson(result);
         print(result);
         isPrimaryLec.value = dosenData.value.data?[0].dosenUtama == 1 &&
-                dosenData.value.data?[0].nama == dataUser.value.account?.nama ??
-            dataUserLocal['account']['nama'];
+                dosenData.value.data?[0].nama == dataUserLocal['account']['nama'];
         isDataLoading.value = false;
         return dosenData.value;
       }

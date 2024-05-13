@@ -19,7 +19,7 @@ class KrsView extends GetView<KrsController> {
   const KrsView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    var npm = dataUser.value.account?.npm ?? dataUserLocal['account']['npm'];
+    var npm =dataUserLocal['account']['npm'];
     return Scaffold(
       backgroundColor: context.theme.primaryColor,
       // backgroundColor: Colors.white,

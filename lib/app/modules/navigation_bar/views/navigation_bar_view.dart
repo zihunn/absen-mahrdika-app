@@ -9,7 +9,6 @@ class NavigationBarView extends GetView<NavigationBarController> {
   @override
   Widget build(BuildContext context) {
     Get.put(NavigationBarController());
-    Get.put(ProfileController());
     return PersistentTabView(
       context,
       screens: controller.screens,

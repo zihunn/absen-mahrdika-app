@@ -70,8 +70,7 @@ class _CardSettingState extends State<CardSetting> {
           CardListTile(
               onTap: () {
                 Map<String, dynamic> jadwal = {
-                  'npm': dataUser.value.account?.npm ??
-                      controller.dataUserLocal['account']['npm'],
+                  'npm': dataUserLocal['account']['npm'],
                 };
                 // controller.getJadwal(jadwal);
               },

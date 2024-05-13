@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:absensi_mahardika/app/controllers/auth_controller.dart';
 import 'package:absensi_mahardika/app/modules/Khs/views/khs_view.dart';
 import 'package:absensi_mahardika/app/modules/krs/views/krs_view.dart';
 import 'package:absensi_mahardika/app/utils/color.dart';
@@ -25,9 +26,10 @@ class HomeController extends GetxController
   var date = DateFormat('HH:mm');
   var isDataLoading = false.obs;
   late TabController tabController;
+  static final authCtrl = Get.put(AuthController());
   static GetStorage box = GetStorage();
   var totalAbsen = totalAbsenModel().obs;
-  var dataUserLocal = box.read('dataUser');
+  var dataUserLocal = authCtrl.dataUserLocal;
   var days = DateFormat('EEEE, d MMM yyyy', "id_ID").format(DateTime.now());
 
   List<Map<String, dynamic>> listFitur = [
@@ -117,7 +119,7 @@ class HomeController extends GetxController
 
   @override
   void onInit() {
-    GetStorage.init();
+    print(dataUserLocal = box.read('dataUser'));
     super.onInit();
   }
 

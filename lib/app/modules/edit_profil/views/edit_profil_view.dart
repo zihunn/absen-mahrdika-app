@@ -39,10 +39,9 @@ class EditProfilView extends GetView<EditProfilController> {
         width: Get.width,
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          padding: const EdgeInsets.only(top: 20),
-          child: Obx(() {
-            return Column(
+            physics: const BouncingScrollPhysics(),
+            padding: const EdgeInsets.only(top: 20),
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 GestureDetector(
@@ -56,26 +55,27 @@ class EditProfilView extends GetView<EditProfilController> {
                     ),
                     child: Stack(
                       children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: controller.image.value == ''
-                                ? dataUser.value.account!.image == null
-                                    ? const DecorationImage(
-                                        image: AssetImage(
-                                            'assets/images/noimage.png'),
-                                      )
+                        Obx(() => Container(
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                image: controller.image.value == ''
+                                    ? controller.dataUser['account']['image'] ==
+                                            null
+                                        ? const DecorationImage(
+                                            image: AssetImage(
+                                                'assets/images/noimage.png'),
+                                          )
+                                        : DecorationImage(
+                                            image: NetworkImage(controller
+                                                .dataUser['account']['image']),
+                                          )
                                     : DecorationImage(
-                                        image: NetworkImage(
-                                            dataUser.value.account!.image!),
-                                      )
-                                : DecorationImage(
-                                    image: FileImage(
-                                      File(controller.image.value),
-                                    ),
-                                  ),
-                          ),
-                        ),
+                                        image: FileImage(
+                                          File(controller.image.value),
+                                        ),
+                                      ),
+                              ),
+                            )),
                       ],
                     ),
                   ),
@@ -84,7 +84,7 @@ class EditProfilView extends GetView<EditProfilController> {
                   height: 20.0,
                 ),
                 Text(
-                  dataUser.value.account?.nama ?? '-',
+                  dataUserLocal['account']['nama'],
                   style: Style.Header1.copyWith(
                     fontFamily: 'SignikaSemi',
                     color: AppColor.blackSoftColor,
@@ -92,7 +92,7 @@ class EditProfilView extends GetView<EditProfilController> {
                   ),
                 ),
                 Text(
-                  dataUser.value.account?.prodiId ?? '-',
+                  dataUserLocal['account']['prodiID'],
                   style: Style.Header1.copyWith(
                     fontFamily: 'SignikaRegular',
                     color: AppColor.greyColor,
@@ -203,15 +203,13 @@ class EditProfilView extends GetView<EditProfilController> {
 
                     print(requestBody);
                     controller.editProfil(
-                        requestBody, dataUser.value.account!.npm!);
+                        requestBody, dataUserLocal['account']['npm']);
                   },
                   height: 50,
                   width: Get.width,
                 ),
               ],
-            );
-          }),
-        ),
+            )),
       ),
     );
   }

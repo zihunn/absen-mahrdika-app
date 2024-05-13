@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:absensi_mahardika/app/data/history_perizinan_model.dart';
 import 'package:absensi_mahardika/app/data/mk_perizinan_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -14,10 +15,44 @@ import '../../../utils/network.dart';
 class PerizinanController extends GetxController {
   Map<String, dynamic> mkList = {};
 
+  Future<HistoryPerizinanModel?> show(String id)async {
+    try {
+      var url = Uri.https(domainUrl, 'api/perizinan?npm=$id');
+
+      http.Response response = await http.get(url, headers: {
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      }).timeout(const Duration(minutes: 2));
+
+      print(response.statusCode);
+      if (response.statusCode == 200) {
+        return HistoryPerizinanModel.fromJson(json.decode(response.body));
+      }
+    } on TimeoutException catch (_) {
+      bottomsheet(
+        title: 'Yah Gagal!',
+        subtitle: 'Perikas kembali koneksi anda',
+        image: 'assets/images/sad-illustration.png',
+        onTap: () {
+          Get.back();
+        },
+      );
+    } on SocketException catch (_) {
+      bottomsheet(
+        title: 'Yah Gagal!',
+        subtitle: 'Kesalahan tidak diketahui',
+        image: 'assets/images/sad-illustration.png',
+        onTap: () {
+          Get.back();
+        },
+      );
+    }
+    return null;
+  }
+
   Future<MkPerizinanModel?> getMk(String npm) async {
     try {
-      var url =
-          Uri.https('api-mobile.lkp-ppik.id', '/api/perizinan/showmk/$npm');
+      var url = Uri.https(domainUrl, '/api/perizinan/showmk/$npm');
       print(url);
 
       http.Response response = await http.get(url, headers: {
@@ -115,7 +150,7 @@ class PerizinanController extends GetxController {
     // TODO: implement onInit
 
     updateDataInList();
-    getMk(dataUser.value.account?.npm ?? dataUserLocal['account']['npm']);
+    getMk(dataUserLocal['account']['npm']);
     super.onInit();
   }
 }

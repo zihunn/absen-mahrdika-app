@@ -24,8 +24,7 @@ class TambahDosenView extends GetView<TambahDosenController> {
           width: Get.width,
           height: Get.height,
           child: FutureBuilder<List>(
-            future: controller.getMK(dataUser.value.account?.dosenId ??
-                dataUserLocal['account']['dosenID']),
+            future: controller.getMK(dataUserLocal['account']['dosenID']),
             builder: (context, snapshot) => snapshot.connectionState ==
                     ConnectionState.waiting
                 ? const Center(

@@ -13,7 +13,10 @@ class ButtonLogout extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(ProfileController());
     return GestureDetector(
-      onTap: () => controller.logout(token),
+      onTap: () {
+        print(token);
+        controller.logout(token);
+      },
       child: Container(
         clipBehavior: Clip.antiAlias,
         margin: const EdgeInsets.symmetric(vertical: 20),

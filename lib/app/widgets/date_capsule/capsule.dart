@@ -31,7 +31,7 @@ Widget capsuleView(int index) {
         ctrl.currentDateTime.value = ctrl.currentMonthList[index];
 
         Map<String, dynamic> requestParams = {
-          'dosen_id': dataUser.value.account?.dosenId ??
+          'dosen_id': 
               dataUserLocal['account']['dosen_id'],
           'date': ctrl.currentDateTime.value.toString().split(' ').first
         };

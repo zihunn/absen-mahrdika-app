@@ -369,7 +369,7 @@ void MeetingBottomsheet(
                 ),
                 onTap: () {
                   Map<String, dynamic> requestBody = {
-                    'dosen_id': dataUser.value.account?.dosenId ??
+                    'dosen_id': 
                         dataUserLocal['account']['dosen_id'],
                     'jadwal_id': jadwalId,
                     'pertemuan': controller.pertemuanCtrl.value.text,
