@@ -1,15 +1,9 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:math' as math;
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
-
-import 'package:absensi_mahardika/app/modules/pertemuan/controllers/pertemuan_controller.dart';
-
-import '../../modules/pertemuan/views/pertemuan_view.dart';
-import '../../utils/network.dart';
 import '../date_capsule/capsule.dart';
 
 class CardMkDosen extends StatefulWidget {
@@ -50,9 +44,9 @@ class _CardMkDosenState extends State<CardMkDosen> {
       margin: const EdgeInsets.only(bottom: 10),
       height: Get.height / 7.5,
       width: Get.width,
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.all(
+      decoration: BoxDecoration(
+        color: context.theme.primaryColor,
+        borderRadius: const BorderRadius.all(
           Radius.circular(12.0),
         ),
       ),
@@ -111,9 +105,10 @@ class _CardMkDosenState extends State<CardMkDosen> {
                       widget.mk,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontFamily: 'SignikaBold',
                         fontSize: 16.0,
+                        color: context.theme.textTheme.bodyLarge!.color,
                       ),
                     ),
                   ),
@@ -129,7 +124,7 @@ class _CardMkDosenState extends State<CardMkDosen> {
                           '${widget.jamMulai} - ${widget.jamSelesai}',
                           style: TextStyle(
                             fontFamily: 'SignikaSemi',
-                            color: Colors.grey.withOpacity(0.8),
+                            color: context.theme.textTheme.bodyLarge!.color,
                             fontSize: 15.0,
                           ),
                         ),
@@ -140,7 +135,7 @@ class _CardMkDosenState extends State<CardMkDosen> {
                           '${widget.prodi} ${widget.semester}',
                           style: TextStyle(
                             fontFamily: 'SignikaSemi',
-                            color: Colors.grey.withOpacity(0.8),
+                            color: context.theme.textTheme.bodyLarge!.color,
                             fontSize: 15.0,
                           ),
                         ),
@@ -175,7 +170,7 @@ class _CardMkDosenState extends State<CardMkDosen> {
                             style: TextStyle(
                               fontSize: 10.0,
                               fontWeight: FontWeight.w700,
-                              color: Colors.grey.withOpacity(0.8),
+                              color: context.theme.textTheme.bodyLarge!.color,
                             ),
                           ),
                           circularStrokeCap: CircularStrokeCap.round,
@@ -183,13 +178,12 @@ class _CardMkDosenState extends State<CardMkDosen> {
                       )),
                   IconButton(
                     onPressed: () => widget.onTap(),
-                 
                     splashRadius: 10,
                     icon: const Icon(
                       CupertinoIcons.right_chevron,
                       size: 28,
                     ),
-                    color: Colors.grey.withOpacity(0.3),
+                    color: context.theme.textTheme.bodyLarge!.color,
                   )
                 ],
               ),

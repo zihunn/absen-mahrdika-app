@@ -18,57 +18,134 @@ class NavigationBarController extends GetxController {
   final controller = PersistentTabController(initialIndex: 0);
   final box = GetStorage();
 
-  List<PersistentBottomNavBarItem> navBarItem() {
+  PersistentTabController tabController =
+      PersistentTabController(initialIndex: 0);
+
+   RxList<Widget> screens = List<Widget>.generate(5, (_) => Container()).obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    loadScreen(0); // Load the initial screen
+  }
+
+  void loadScreen(int index) {
+    switch (index) {
+      case 0:
+        screens[0] = HomeView(key: UniqueKey());
+        break;
+      case 1:
+        screens[1] = JadwalKuliahView(key: UniqueKey());
+        break;
+      case 2:
+        screens[2] = ScanView(key: UniqueKey());
+        break;
+      case 3:
+        screens[3] = HistoryAbsenView(key: UniqueKey());
+        break;
+      case 4:
+        screens[4] = ProfileView(key: UniqueKey());
+        break;
+    }
+  }
+
+  void clearScreen(int index) {
+    screens[index] = Container();
+  }
+
+  void onTabChanged(int index) {
+    if (navIndex.value != index) {
+      clearScreen(navIndex.value);
+      loadScreen(index);
+    }
+    navIndex.value = index;
+  }
+
+  List<PersistentBottomNavBarItem> navBarItems() {
     return [
       PersistentBottomNavBarItem(
         activeColorPrimary: AppColor.blueColor2,
         inactiveColorPrimary: AppColor.greyColor,
         title: "beranda".tr,
-        icon: const Icon(
-          Ionicons.home,
-        ),
+        icon: const Icon(Ionicons.home),
       ),
       PersistentBottomNavBarItem(
         activeColorPrimary: AppColor.blueColor2,
         inactiveColorPrimary: AppColor.greyColor,
         title: "jadwal".tr,
-        icon: const Icon(
-          Icons.menu_book_rounded,
-        ),
+        icon: const Icon(Icons.menu_book_rounded),
       ),
       PersistentBottomNavBarItem(
         activeColorPrimary: AppColor.blueColor2,
         inactiveColorPrimary: AppColor.greyColor,
-        icon: Image.asset(
-          "assets/images/logo-mahardika.png",
-        ),
+        icon: Image.asset("assets/images/logo-mahardika.png"),
       ),
       PersistentBottomNavBarItem(
         activeColorPrimary: AppColor.blueColor2,
         inactiveColorPrimary: AppColor.greyColor,
         title: "riwayat_absen".tr,
-        icon: const Icon(
-          EneftyIcons.note_2_outline,
-        ),
+        icon: const Icon(EneftyIcons.note_2_outline),
       ),
       PersistentBottomNavBarItem(
         activeColorPrimary: AppColor.blueColor2,
         inactiveColorPrimary: AppColor.greyColor,
         title: "profil".tr,
-        icon: const Icon(
-          Ionicons.person_outline,
-        ),
+        icon: const Icon(Ionicons.person_outline),
       ),
     ];
   }
 
-  final List<Widget> screens = [
-    const HomeView(),
-    const JadwalKuliahView(),
-    const ScanView(),
-    const HistoryAbsenView(),
-    const ProfileView()
-  ];
+  // List<PersistentBottomNavBarItem> navBarItem() {
+  //   return [
+  //     PersistentBottomNavBarItem(
+  //       activeColorPrimary: AppColor.blueColor2,
+  //       inactiveColorPrimary: AppColor.greyColor,
+  //       title: "beranda".tr,
+  //       icon: const Icon(
+  //         Ionicons.home,
+  //       ),
+  //     ),
+  //     PersistentBottomNavBarItem(
+  //       activeColorPrimary: AppColor.blueColor2,
+  //       inactiveColorPrimary: AppColor.greyColor,
+  //       title: "jadwal".tr,
+  //       icon: const Icon(
+  //         Icons.menu_book_rounded,
+  //       ),
+  //     ),
+  //     PersistentBottomNavBarItem(
+  //       activeColorPrimary: AppColor.blueColor2,
+  //       inactiveColorPrimary: AppColor.greyColor,
+  //       icon: Image.asset(
+  //         "assets/images/logo-mahardika.png",
+  //       ),
+  //     ),
+  //     PersistentBottomNavBarItem(
+  //       activeColorPrimary: AppColor.blueColor2,
+  //       inactiveColorPrimary: AppColor.greyColor,
+  //       title: "riwayat_absen".tr,
+  //       icon: const Icon(
+  //         EneftyIcons.note_2_outline,
+  //       ),
+  //     ),
+  //     PersistentBottomNavBarItem(
+  //       activeColorPrimary: AppColor.blueColor2,
+  //       inactiveColorPrimary: AppColor.greyColor,
+  //       title: "profil".tr,
+  //       icon: const Icon(
+  //         Ionicons.person_outline,
+  //       ),
+  //     ),
+  //   ];
+  // }
+
+  // final List<Widget> screens = [
+  //   const HomeView(),
+  //   const JadwalKuliahView(),
+  //   const ScanView(),
+  //   const HistoryAbsenView(),
+  //   const ProfileView()
+  // ];
 
   void changeNavIndex(int index) {
     controller.index = index;
@@ -76,12 +153,11 @@ class NavigationBarController extends GetxController {
     update();
   }
 
-  @override
-  void onInit() {
-    print(box.read('dataUser'));
-    box.listen(() => print('box changed'));
-
-    // TODO: implement onInit
-    super.onInit();
-  }
+  // @override
+  // void onInit() {
+  //   print(box.read('dataUser'));
+  //   box.listen(() => print('box changed'));
+  //   // TODO: implement onInit
+  //   super.onInit();
+  // }
 }

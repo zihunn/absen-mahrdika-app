@@ -11,13 +11,14 @@ import 'package:get_storage/get_storage.dart';
 import "package:http/http.dart" as http;
 import 'package:dio/dio.dart' as dioPackage;
 
-class ProfileController extends GetxController {
+class ProfileController extends GetxController  {
   final RxBool theme = false.obs;
   var totalAbsen = totalAbsenModel().obs;
   final RxBool language = false.obs;
   final RxBool isChange = false.obs;
   static GetStorage box = GetStorage();
-  var dataUserLocal = box.read('dataUser');
+  get dataUserLocal => (box.read('dataUser') ?? "");
+  // get dataUserLocal => dataUser;
   var isDataLoading = false.obs;
   RxBool isDarkMode = false.obs;
   final homeCtrl = Get.put(HomeController());
@@ -77,6 +78,7 @@ class ProfileController extends GetxController {
 
   @override
   void onInit() {
+box.listen(() => print('box changed home controller'));
     isDarkMode.value = box.read('isDarkMode') ?? false;
     super.onInit();
   }

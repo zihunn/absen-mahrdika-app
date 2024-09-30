@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:absensi_mahardika/app/controllers/auth_controller.dart';
 import 'package:absensi_mahardika/app/modules/Khs/views/khs_view.dart';
+import 'package:absensi_mahardika/app/modules/edit_profil/controllers/edit_profil_controller.dart';
 import 'package:absensi_mahardika/app/modules/krs/views/krs_view.dart';
 import 'package:absensi_mahardika/app/utils/color.dart';
 import 'package:flutter/material.dart';
@@ -26,16 +27,16 @@ class HomeController extends GetxController
   var date = DateFormat('HH:mm');
   var isDataLoading = false.obs;
   late TabController tabController;
-  static final authCtrl = Get.put(AuthController());
+  final editCtrl = Get.put(EditProfilController()).dataUserLocal;
   static GetStorage box = GetStorage();
   var totalAbsen = totalAbsenModel().obs;
-  var dataUserLocal = authCtrl.dataUserLocal;
   var days = DateFormat('EEEE, d MMM yyyy', "id_ID").format(DateTime.now());
+  get dataUserLocal => (box.read('dataUser') ?? "");
 
   List<Map<String, dynamic>> listFitur = [
     {
       'image': "assets/icons/krs.png",
-      'name': "Krs".tr,
+      'name': "KRS",
       'subtitle': "Kartu Rencana Studi",
       'onTap': () {
         Get.to(
@@ -46,7 +47,7 @@ class HomeController extends GetxController
     },
     {
       'image': "assets/icons/khs.png",
-      'name': "Khs".tr,
+      'name': "KHS".tr,
       'subtitle': "Kartu Hasil Studi",
       'onTap': () {
         Get.to(
@@ -84,6 +85,9 @@ class HomeController extends GetxController
     Get.changeTheme(Get.isDarkMode ? Themes.light : Themes.dark);
   }
 
+  HomeController() {
+    print('home ctrl');
+  }
   Stream<DateTime> getTime() async* {
     while (true) {
       await Future.delayed(const Duration(seconds: 1));
@@ -119,13 +123,22 @@ class HomeController extends GetxController
 
   @override
   void onInit() {
-    print(dataUserLocal = box.read('dataUser'));
+    print('onInit Home Controller');
+    box.listen(() => print('box changed home controller'));
+
     super.onInit();
   }
 
   @override
+  void onReady() {
+    // TODO: implement onReady
+    print('on ready home');
+    super.onReady();
+  }
+
+  @override
   void onClose() {
-    // TODO: implement onClose
+    print('onClose Home Controller');
     super.onClose();
   }
 }

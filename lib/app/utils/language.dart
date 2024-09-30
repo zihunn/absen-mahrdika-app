@@ -25,7 +25,8 @@ class LocalString extends Translations {
           'ubah_tema': 'Change Theme',
           'ubah_bahasa': 'Change Language',
           'qr': 'place the Qr code in the area',
-          'descQr' : 'Scanning will be started automatically'
+          'descQr': 'Scanning will be started automatically',
+          'krs': 'Course Plan Card'
         },
         'id_ID': {
           'fitur': 'Fitur Lainnya',
@@ -48,7 +49,8 @@ class LocalString extends Translations {
           'ubah_tema': 'Ubah Tema',
           'ubah_bahasa': 'Ubah Bahasa',
           'qr': 'Masukkan kode QR di area tersebut',
-          'descQr' : 'Scan akan dimulai secara otomatis',
+          'descQr': 'Scan akan dimulai secara otomatis',
+          'krs': 'Kartu Rencana Studi'
         },
       };
 }

@@ -1,3 +1,4 @@
+import 'package:absensi_mahardika/app/modules/profile/views/profile_view.dart';
 import 'package:get/get.dart';
 import 'dart:io';
 
@@ -11,6 +12,7 @@ import 'package:absensi_mahardika/app/widgets/textfield/custom_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 import '../../../utils/network.dart';
+import '../../navigation_bar/controllers/navigation_bar_controller.dart';
 import '../controllers/edit_profil_controller.dart';
 
 class EditProfilView extends GetView<EditProfilController> {
@@ -32,7 +34,13 @@ class EditProfilView extends GetView<EditProfilController> {
           height: 50,
           width: 50,
           icon: Ionicons.arrow_back,
-          onTap: () => Get.back(),
+          onTap: () {
+            var navCtrl = Get.put(NavigationBarController());
+            // navCtrl.changeNavIndex(4);
+
+            navCtrl.screens[4] =  ProfileView(key: UniqueKey(),);
+            Get.back();
+          },
         ),
       ),
       body: Container(
@@ -59,7 +67,8 @@ class EditProfilView extends GetView<EditProfilController> {
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 image: controller.image.value == ''
-                                    ? controller.dataUser['account']['image'] ==
+                                    ? controller.dataUserLocal['account']
+                                                ['image'] ==
                                             null
                                         ? const DecorationImage(
                                             image: AssetImage(
@@ -67,7 +76,8 @@ class EditProfilView extends GetView<EditProfilController> {
                                           )
                                         : DecorationImage(
                                             image: NetworkImage(controller
-                                                .dataUser['account']['image']),
+                                                    .dataUserLocal['account']
+                                                ['image']),
                                           )
                                     : DecorationImage(
                                         image: FileImage(

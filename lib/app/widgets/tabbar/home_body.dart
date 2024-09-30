@@ -1,3 +1,4 @@
+import 'package:absensi_mahardika/app/controllers/auth_controller.dart';
 import 'package:absensi_mahardika/app/data/totalAbsen_model.dart';
 import 'package:absensi_mahardika/app/modules/navigation_bar/controllers/navigation_bar_controller.dart';
 import 'package:absensi_mahardika/app/routes/app_pages.dart';
@@ -49,7 +50,6 @@ class _HomeBody extends State<HomeBody> {
                   const SizedBox(
                     height: 20.0,
                   ),
-                  
                   GridView.builder(
                     padding: EdgeInsets.zero,
                     gridDelegate:

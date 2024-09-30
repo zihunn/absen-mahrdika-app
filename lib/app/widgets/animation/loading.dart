@@ -217,6 +217,74 @@ class CardMhswShimmer extends StatelessWidget {
   }
 }
 
+class CardPerizinanShimmer extends StatelessWidget {
+  const CardPerizinanShimmer({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey,
+      highlightColor: Colors.white,
+      child: Container(
+        padding: const EdgeInsets.all(10),
+        margin: const EdgeInsets.only(bottom: 10),
+        height: Get.height / 10,
+        width: Get.width,
+        decoration: BoxDecoration(
+          color: AppColor.bluePrimary.withOpacity(0.04),
+          borderRadius: const BorderRadius.all(
+            Radius.circular(12.0),
+          ),
+        ),
+        child: Row(
+          children: [
+            Skeleton(
+              height: Get.height,
+              width: Get.width / 7,
+            ),
+            const SizedBox(
+              width: 10.0,
+            ),
+            Expanded(
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Skeleton(
+                        height: Get.height / 45,
+                        width: Get.width / 2.5,
+                      ),
+                      Skeleton(
+                        height: Get.height / 45,
+                        width: Get.width / 5.5,
+                      ),
+                    ],
+                  ),
+                  const Spacer(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Skeleton(
+                        height: Get.height / 45,
+                        width: Get.width / 2.5,
+                      ),
+                      Skeleton(
+                        height: Get.height / 45,
+                        width: Get.width / 5.5,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class Skeleton extends StatelessWidget {
   final double? height;
   final double? width;

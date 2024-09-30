@@ -1,54 +1,19 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'dart:ui';
 
-import 'package:absensi_mahardika/app/data/history_perizinan_model.dart';
-import 'package:absensi_mahardika/app/data/mk_perizinan_model.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import "package:http/http.dart" as http;
+import 'package:get/get.dart';
 
+import '../../../data/mk_perizinan_model.dart';
 import '../../../utils/bottomsheet.dart';
 import '../../../utils/color.dart';
 import '../../../utils/network.dart';
 
-class PerizinanController extends GetxController {
-  Map<String, dynamic> mkList = {};
-
-  Future<HistoryPerizinanModel?> show(requestParams) async {
-    try {
-      var url = Uri.https(domainUrl, 'api/perizinan', requestParams);
-
-      http.Response response = await http.get(url, headers: {
-        'Accept': 'application/json',
-        'Authorization': 'Bearer $token',
-      }).timeout(const Duration(minutes: 2));
-
-      print(response.body);
-      if (response.statusCode == 200) {
-        return HistoryPerizinanModel.fromJson(json.decode(response.body));
-      }
-    } on TimeoutException catch (_) {
-      bottomsheet(
-        title: 'Yah Gagal!',
-        subtitle: 'Perikas kembali koneksi anda',
-        image: 'assets/images/sad-illustration.png',
-        onTap: () {
-          Get.back();
-        },
-      );
-    } on SocketException catch (_) {
-      bottomsheet(
-        title: 'Yah Gagal!',
-        subtitle: 'Kesalahan tidak diketahui',
-        image: 'assets/images/sad-illustration.png',
-        onTap: () {
-          Get.back();
-        },
-      );
-    }
-    return null;
-  }
+class MkPerizinanController extends GetxController {
+  //TODO: Implement MkPerizinanController
 
   Future<MkPerizinanModel?> getMk(String npm) async {
     try {
@@ -86,13 +51,6 @@ class PerizinanController extends GetxController {
       );
     }
     return null;
-  }
-
-  allWordsCapitilize(String str) {
-    return str.toLowerCase().split(' ').map((word) {
-      String leftText = (word.length > 1) ? word.substring(1, word.length) : '';
-      return word[0].toUpperCase() + leftText;
-    }).join(' ');
   }
 
   List imageAndColor = [

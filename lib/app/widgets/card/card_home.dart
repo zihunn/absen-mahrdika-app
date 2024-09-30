@@ -44,8 +44,8 @@ class _CardTabbarState extends State<CardTabbar> {
       width: Get.width / 1.12,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        // color: context.theme.primaryColor,
-        color: Colors.white,
+        color: context.theme.primaryColor,
+        // color: Colors.white,
         boxShadow: [
           BoxShadow(
             color: context.theme.shadowColor,

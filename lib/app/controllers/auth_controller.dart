@@ -49,7 +49,12 @@ class AuthController extends GetxController {
   Future register(requestBody) async {
     try {
       print('1');
-      var res = await dio.post(registerUrl, data: jsonEncode(requestBody));
+      // var res = await dio.post(registerUrl, data: jsonEncode(requestBody));
+      http.Response res = await http.post(
+        Uri.parse(registerUrl),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode(requestBody),
+      );
       print('ini print regis ' '$res');
       print(registerUrl);
       if (res.statusCode == 200) {
@@ -64,7 +69,7 @@ class AuthController extends GetxController {
         );
         print(res.statusCode);
 
-        return res.data;
+        return res.body;
       }
       if (res.statusCode == 401) {
         bottomsheet(

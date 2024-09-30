@@ -46,7 +46,7 @@ class FormPerizinanView extends GetView<FormPerizinanController> {
             children: [
               Container(
                 height: 50,
-                width: Get.width / 2,
+                width: Get.width / 1.2,
                 alignment: Alignment.center,
                 decoration: const BoxDecoration(),
                 child: ListView.builder(
@@ -203,8 +203,8 @@ class FormPerizinanView extends GetView<FormPerizinanController> {
                                 controller.imageFile!.path),
                         'krs_id': arguments[3],
                       };
-
-                      // controller.createPerizinan(requestBody);
+                      print(requestBody);
+                      controller.createPerizinan(requestBody);
                     }
                   },
                   child: const Center(

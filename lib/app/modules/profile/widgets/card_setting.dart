@@ -1,4 +1,5 @@
 import 'package:absensi_mahardika/app/modules/edit_profil/views/edit_profil_view.dart';
+import 'package:absensi_mahardika/app/modules/navigation_bar/controllers/navigation_bar_controller.dart';
 import 'package:absensi_mahardika/app/utils/network.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
@@ -53,10 +54,13 @@ class _CardSettingState extends State<CardSetting> {
         children: [
           CardListTile(
             onTap: () {
+              
               Get.to(
                 () => const EditProfilView(),
                 transition: Transition.rightToLeft,
               );
+              final navCtrl = Get.put(NavigationBarController());
+              navCtrl.screens[4] = Container();
             },
             leading: const Icon(
               Icons.person_2_rounded,

@@ -263,7 +263,6 @@ class RegisterView extends GetView<RegisterController> {
               const SizedBox(
                 height: 35.0,
               ),
-             
               FadeAnimation(
                 1.8,
                 SizedBox(
@@ -301,7 +300,7 @@ class RegisterView extends GetView<RegisterController> {
                         authCtrl.register(requestBody);
                       }
                     },
-                    child: const Text("Login"),
+                    child: const Text("Create"),
                   ),
                 ),
               ),

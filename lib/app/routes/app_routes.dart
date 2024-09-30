@@ -36,6 +36,7 @@ abstract class Routes {
   static const TODO = _Paths.TODO;
   static const TAMBAH_TASK = _Paths.TAMBAH_TASK;
   static const ROOM_SHARE = _Paths.ROOM_SHARE;
+  static const MK_PERIZINAN = _Paths.MK_PERIZINAN;
 }
 
 abstract class _Paths {
@@ -74,4 +75,5 @@ abstract class _Paths {
   static const TODO = '/todo';
   static const TAMBAH_TASK = '/tambah-task';
   static const ROOM_SHARE = '/room-share';
+  static const MK_PERIZINAN = '/mk-perizinan';
 }

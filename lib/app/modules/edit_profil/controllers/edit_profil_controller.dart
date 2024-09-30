@@ -1,6 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:absensi_mahardika/app/modules/home/controllers/home_controller.dart';
+import 'package:absensi_mahardika/app/modules/navigation_bar/controllers/navigation_bar_controller.dart';
+import 'package:absensi_mahardika/app/modules/profile/controllers/profile_controller.dart';
 import 'package:absensi_mahardika/app/utils/color.dart';
 import 'package:absensi_mahardika/app/utils/network.dart';
 import 'package:dio/dio.dart' as diopack;
@@ -12,16 +15,21 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import '../../../data/user_model.dart';
 import '../../../utils/bottomsheet.dart';
+import '../../profile/views/profile_view.dart';
 
 class EditProfilController extends GetxController {
   RxInt indexGender = 0.obs;
   var isDataLoading = false.obs;
-  static  GetStorage box = GetStorage();
-  var dataUser = box.read('dataUser');
-  RxString gender = '${dataUserLocal['account']['jenis_kelamin']}'.obs;
+  static GetStorage box = GetStorage();
+  static var homeCtrl = Get.put(HomeController()).dataUserLocal;
+  static var profilCtrl = Get.put(ProfileController()).dataUserLocal;
+
+  get dataUserLocal => (box.read('dataUser') ?? "");
+
+  RxString gender = ''.obs;
   RxString image = ''.obs;
   final picker = ImagePicker();
-  RxString selectedDate = '${dataUserLocal['account']['tanggal_lahir']}'.obs;
+  RxString selectedDate = ''.obs;
   var dataUserModel = userModel().obs;
   File? img;
   late var nameCtrl = TextEditingController(
@@ -34,6 +42,10 @@ class EditProfilController extends GetxController {
 
   late var emailCtrl =
       TextEditingController(text: dataUserLocal['account']['email']);
+
+  EditProfilController() {
+    print('edit ctrl');
+  }
 
 //Crop Image
   cropImage(File imgFile) async {
@@ -97,6 +109,7 @@ class EditProfilController extends GetxController {
 // edit profil
   Future editProfil(requestBody, String npm) async {
     try {
+      var navCtrl = Get.put(NavigationBarController());
       var response = await dio.post(
         '$editProfilUrl$npm',
         options: diopack.Options(headers: {
@@ -110,19 +123,22 @@ class EditProfilController extends GetxController {
       if (response.statusCode == 200) {
         // print(dataUser.value.account!.image);
         print(response.data);
-        // if (box.read('dataUser') != null) {
-        //   box.remove('dataUser');
-        // }
-        box.write('dataUser', jsonDecode(response.data));
+        if (box.read('dataUser') != null) {
+          box.remove('dataUser');
+        }
+        await box.write('dataUser', response.data);
+        homeCtrl = box.read('dataUser');
+        profilCtrl = box.read('dataUser');
+
         bottomsheet(
           title: 'Yay Berhasil!',
           subtitle: 'Data kamu berhasil diubah',
           image: 'assets/images/happy-illustration.png',
-          onTap: () {
+          onTap: () async {
             Get.back();
           },
         );
-        return dataUser;
+        return dataUserLocal;
       }
     } catch (e) {
       print(e);
@@ -151,5 +167,22 @@ class EditProfilController extends GetxController {
 
       selectedDate.value = formatter.format(pickedDate);
     }
+  }
+
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    box.listen(() => print('box changed edit controller'));
+    // gender.value = '${dataUserLocal['account']['jenis_kelamin']}';
+    // selectedDate.value = '${dataUserLocal['account']['tanggal_lahir']}';
+    super.onInit();
+  }
+
+  @override
+  void onClose() {
+    // TODO: implement onClose
+    // box.listen(() => print('box changed edit controller'));
+
+    super.onClose();
   }
 }

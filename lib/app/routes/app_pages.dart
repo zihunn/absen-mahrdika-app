@@ -2,6 +2,8 @@ import 'package:get/get.dart';
 
 import '../modules/Khs/bindings/khs_binding.dart';
 import '../modules/Khs/views/khs_view.dart';
+import '../modules/MkPerizinan/bindings/mk_perizinan_binding.dart';
+import '../modules/MkPerizinan/views/mk_perizinan_view.dart';
 import '../modules/calendar/bindings/calendar_binding.dart';
 import '../modules/calendar/views/calendar_view.dart';
 import '../modules/detail_pertemuan/bindings/detail_pertemuan_binding.dart';
@@ -232,6 +234,11 @@ class AppPages {
       name: _Paths.ROOM_SHARE,
       page: () => const RoomShareView(),
       binding: RoomShareBinding(),
+    ),
+    GetPage(
+      name: _Paths.MK_PERIZINAN,
+      page: () => const MkPerizinanView(),
+      binding: MkPerizinanBinding(),
     ),
   ];
 }

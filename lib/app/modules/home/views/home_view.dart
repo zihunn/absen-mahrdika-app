@@ -59,8 +59,7 @@ class HomeView extends GetView<HomeController> {
             SafeArea(
               child: Container(
                 width: Get.width,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                padding: const EdgeInsets.fromLTRB(15, 45, 15, 15),
                 child: Column(
                   children: [
                     Row(

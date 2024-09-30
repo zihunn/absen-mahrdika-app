@@ -5,7 +5,8 @@ import '../../utils/color.dart';
 import '../../utils/style.dart';
 
 class CustomCard {
-  static Widget CardHistoryPerizinan() {
+  static Widget CardHistoryPerizinan(
+      {required String name, date, status, required Color color}) {
     return Container(
       margin: const EdgeInsets.only(
         bottom: 10.0,
@@ -37,10 +38,14 @@ class CustomCard {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      "Struktur Data",
-                      style: Style.Header1.copyWith(
-                          color: AppColor.blackSoftColor),
+                    SizedBox(
+                      width: Get.width / 2,
+                      child: Text(
+                        name,
+                        overflow: TextOverflow.ellipsis,
+                        style: Style.Header1.copyWith(
+                            color: AppColor.blackSoftColor),
+                      ),
                     ),
                     Container(
                       child: const Row(
@@ -69,18 +74,26 @@ class CustomCard {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "21 April 2024",
+                      date,
                       style: Style.Subtitle1.copyWith(
                           color: AppColor.blackSoftColor.withOpacity(0.5)),
                     ),
                     Container(
-                      height: 20,
-                      width: 50,
+                      height: 30,
+                      padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
                         borderRadius: const BorderRadius.all(
                           Radius.circular(4.0),
                         ),
-                        color: Colors.green[100]!.withOpacity(0.8),
+                        color: color.withOpacity(0.13),
+                      ),
+                      child: Center(
+                        child: Text(
+                          status,
+                          style: Style.Subtitle1.copyWith(
+                            color: color,
+                          ),
+                        ),
                       ),
                     ),
                   ],

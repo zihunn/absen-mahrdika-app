@@ -131,7 +131,6 @@ class ScanView extends GetView<ScanController> {
                         child: QRView(
                           key: controller.qrKey,
                           onQRViewCreated: controller.onQRViewCreated,
-                          
                         ),
                       ),
                     ),
@@ -158,9 +157,6 @@ class ScanView extends GetView<ScanController> {
                   onTap: () {},
                 ),
               ],
-            ),
-            Obx(
-              () => Text(controller.latitude.value.toString()),
             ),
             Container(
               alignment: Alignment.center,

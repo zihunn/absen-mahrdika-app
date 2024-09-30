@@ -1,4 +1,3 @@
-import 'package:absensi_mahardika/app/controllers/auth_controller.dart';
 import 'package:absensi_mahardika/app/modules/profile/widgets/Card_absen.dart';
 import 'package:absensi_mahardika/app/modules/profile/widgets/card_setting.dart';
 import 'package:absensi_mahardika/app/modules/profile/widgets/logout_button.dart';
@@ -15,7 +14,7 @@ class ProfileView extends GetView<ProfileController> {
   const ProfileView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(ProfileController());
+    // final controller = Get.put(ProfileController());
     return Scaffold(
       backgroundColor: context.theme.primaryColor,
       body: SizedBox(
@@ -123,7 +122,7 @@ class ProfileView extends GetView<ProfileController> {
                       ),
                     ),
                     Positioned(
-                        left: Get.width / 2.7,
+                        left: Get.width / 2.7,  
                         top: 5,
                         child: Container(
                           height: 100,

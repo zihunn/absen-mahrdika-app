@@ -23,10 +23,10 @@ class _BgContainerState extends State<BgContainer> {
       width: Get.width,
       margin: const EdgeInsets.only(top: 60),
       padding: const EdgeInsets.only(top: 100, left: 15, right: 15),
-      decoration: const BoxDecoration(
-        // color: context.theme.primaryColor,
-        color: AppColor.bgColor,
-        borderRadius: BorderRadius.all(
+      decoration: BoxDecoration(
+        color: context.theme.primaryColor,
+        // color: AppColor.bgColor,
+        borderRadius: const BorderRadius.all(
           Radius.circular(15.0),
         ),
       ),

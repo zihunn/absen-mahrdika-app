@@ -6,7 +6,6 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:dio/dio.dart' as diopack;
 
-
 import '../../../utils/bottomsheet.dart';
 import '../../../utils/network.dart';
 
@@ -55,24 +54,34 @@ class FormPerizinanController extends GetxController {
 
   Future createPerizinan(requestBody) async {
     try {
-      var url = Uri.http(baseUrl, 'api/perizinan');
-
       var response = await dio.post(
-        '$perizinanUrl',
-        options: diopack.Options(headers: {
-          'Accept': 'application/json',
-          'Authorization': 'Bearer $token',
-        }),
+        perizinanUrl,
+        options: diopack.Options(
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $token',
+          },
+          receiveTimeout: const Duration(minutes: 2),
+        ),
         data: diopack.FormData.fromMap(requestBody),
-      ).timeout(Duration(minutes: 1));
+      );
 
-      // print(response.body);
-      print(url);
+      print(response.statusCode);
       if (response.statusCode == 200) {
         bottomsheet(
           title: 'Yay Berhasil!',
           subtitle: 'Berhasil Membuat Perizinan',
           image: 'assets/images/happy-illustration.png',
+          onTap: () {
+            Get.back();
+          },
+        );
+      } else if (response.statusCode == 500) {
+        bottomsheet(
+          title: 'Yah Gagal!',
+          subtitle: 'Terjadi kesalahan pada server',
+          image: 'assets/images/sad-illustration.png',
           onTap: () {
             Get.back();
           },
@@ -88,6 +97,7 @@ class FormPerizinanController extends GetxController {
         },
       );
     } on SocketException catch (_) {
+      print(_);
       bottomsheet(
         title: 'Yah Gagal!',
         subtitle: 'Kesalahan tidak diketahui',
@@ -96,6 +106,26 @@ class FormPerizinanController extends GetxController {
           Get.back();
         },
       );
+    } on diopack.DioException catch (e) {
+      if (e.response?.statusCode == 500) {
+        bottomsheet(
+          title: 'Yah Gagal!',
+          subtitle: 'Terjadi kesalahan pada server',
+          image: 'assets/images/sad-illustration.png',
+          onTap: () {
+            Get.back();
+          },
+        );
+      } else {
+        bottomsheet(
+          title: 'Yah Gagal!',
+          subtitle: 'Kesalahan tidak diketahui',
+          image: 'assets/images/sad-illustration.png',
+          onTap: () {
+            Get.back();
+          },
+        );
+      }
     }
   }
 
